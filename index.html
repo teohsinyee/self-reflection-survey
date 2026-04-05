@@ -327,6 +327,103 @@
   .level-positive { background: #EBF5EF; color: var(--green); }
   .level-neutral { background: #FBF3E4; color: var(--amber); }
   .level-attention { background: #FCEAEA; color: var(--red); }
+  .story {
+    display: none;
+    margin-top: 18px;
+  }
+  .story.visible { display: block; }
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .story-kicker {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+  .story-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 36px);
+    line-height: 1.15;
+    letter-spacing: -0.4px;
+    margin-bottom: 10px;
+  }
+  .story-summary {
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .story-focus {
+    margin-top: 18px;
+  }
+  .story-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+  .story-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .story-tag {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 12px;
+    color: var(--text);
+  }
+  .story-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 680px) {
+    .story-grid { grid-template-columns: 1fr; }
+  }
+  .story-col {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .story-list {
+    display: grid;
+    gap: 10px;
+  }
+  .story-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .story-item-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .story-item-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-2);
+  }
+  .story-note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-3);
+  }
 
   /* Footer */
   footer {
@@ -432,6 +529,28 @@
         <div class="interp-grid" id="interp-grid"></div>
       </div>
       <div class="results-footnote">带有 * 的分数代表该量表尚未完成，结果仍会继续变化。</div>
+    </div>
+  </div>
+  <div class="story" id="story-panel">
+    <div class="story-card">
+      <div class="story-kicker">完成后怎么用这些结果</div>
+      <div class="story-title" id="story-title"></div>
+      <div class="story-summary" id="story-summary"></div>
+      <div class="story-focus">
+        <div class="story-subtitle">建议先关注</div>
+        <div class="story-tags" id="story-focus"></div>
+      </div>
+      <div class="story-grid">
+        <div class="story-col">
+          <div class="story-subtitle">本周可以试的 3 个动作</div>
+          <div class="story-list" id="story-actions"></div>
+        </div>
+        <div class="story-col">
+          <div class="story-subtitle">给自己的反思问题</div>
+          <div class="story-list" id="story-prompts"></div>
+        </div>
+      </div>
+      <div class="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
     </div>
   </div>
 </main>
@@ -731,9 +850,9 @@ function getInterp(type, val) {
     return {level:'良好', cls:'level-positive', desc:'倦怠程度低，当前状态较佳'};
   }
   if (type === 'mlq') {
-    if (val >= 48) { return {level:'良好', cls:'level-positive', desc:'生命意义感较强，方向与目标相对清晰'}; }
-    if (val >= 30) { return {level:'中等', cls:'level-neutral', desc:'正在探索生命意义，仍在形成稳定感'}; }
-    return {level:'偏低', cls:'level-attention', desc:'意义感较弱，建议逐步探索重视的价值与目标'};
+    if (val >= 48) { return {level:'较高', cls:'level-positive', desc:'与生命意义相关的感受较强，可能同时包含较高的意义感与较主动的探索'}; }
+    if (val >= 30) { return {level:'中等', cls:'level-neutral', desc:'对生命意义的体验与探索处于中间区间，适合结合下方导读一起看'}; }
+    return {level:'较低', cls:'level-attention', desc:'与生命意义相关的感受较弱，适合逐步探索重视的价值与目标'};
   }
   return null;
 }
@@ -759,21 +878,208 @@ function getScaleAverage(prefix, count) {
   };
 }
 
+function getSubsetTotal(keys) {
+  var total = 0;
+  var answered = 0;
+  keys.forEach(function(key) {
+    if (ans[key] !== undefined) {
+      total += ans[key];
+      answered++;
+    }
+  });
+  return {
+    value: answered ? total : null,
+    answered: answered,
+    complete: answered === keys.length
+  };
+}
+
+function getMlqSubscores() {
+  return {
+    presence: getSubsetTotal(['m1', 'm4', 'm5', 'm6', 'm9']),
+    search: getSubsetTotal(['m2', 'm3', 'm7', 'm8', 'm10'])
+  };
+}
+
 function getResultState() {
   var ikigai = getScaleTotal('i', 9);
   var cbiPersonal = getScaleAverage('c1_', 6);
   var cbiWork = getScaleAverage('c2_', 7);
   var mlq = getScaleTotal('m', 10);
+  var mlqSubs = getMlqSubscores();
 
   return {
     answered: Object.keys(ans).length,
     allDone: ikigai.complete && cbiPersonal.complete && cbiWork.complete && mlq.complete,
+    mlqPresence: mlqSubs.presence.value,
+    mlqSearch: mlqSubs.search.value,
     items: [
       {name:'Ikigai-9 意义感', val:ikigai.value, type:'ikigai', scoreLabel:'总分', max:45, complete:ikigai.complete, textId:'r-iki', barId:'b-iki'},
       {name:'CBI 个人倦怠', val:cbiPersonal.value, type:'cbi', scoreLabel:'均值', max:100, complete:cbiPersonal.complete, textId:'r-c1', barId:'b-c1'},
       {name:'CBI 工作倦怠', val:cbiWork.value, type:'cbi', scoreLabel:'均值', max:100, complete:cbiWork.complete, textId:'r-c2', barId:'b-c2'},
-      {name:'MLQ 生命意义', val:mlq.value, type:'mlq', scoreLabel:'总分', max:70, complete:mlq.complete, textId:'r-mlq', barId:'b-mlq'}
+      {name:'MLQ 意义相关感受', val:mlq.value, type:'mlq', scoreLabel:'总分', max:70, complete:mlq.complete, textId:'r-mlq', barId:'b-mlq'}
     ]
+  };
+}
+
+function pushUnique(list, value, max) {
+  if (value && list.indexOf(value) === -1 && list.length < max) {
+    list.push(value);
+  }
+}
+
+function pushAction(list, title, body) {
+  if (list.length < 3) {
+    list.push({title: title, body: body});
+  }
+}
+
+function pushPrompt(list, text) {
+  if (list.indexOf(text) === -1 && list.length < 3) {
+    list.push(text);
+  }
+}
+
+function getGuideData(state) {
+  if (!state.allDone) { return null; }
+
+  var ikigai = state.items[0].val;
+  var cbiPersonal = state.items[1].val;
+  var cbiWork = state.items[2].val;
+  var mlqPresence = state.mlqPresence;
+  var mlqSearch = state.mlqSearch;
+  var burnoutMax = Math.max(cbiPersonal, cbiWork);
+  var workHeavier = cbiWork >= cbiPersonal + 10;
+  var personalHeavier = cbiPersonal >= cbiWork + 10;
+  var strongMeaning = ikigai >= 36 && mlqPresence >= 24;
+  var lowMeaning = ikigai < 27 && mlqPresence < 18;
+  var activeSearch = mlqSearch >= 24;
+  var lowPresence = mlqPresence < 18;
+  var focuses = [];
+  var actions = [];
+  var prompts = [];
+  var title = '';
+  var summary = '';
+
+  if (burnoutMax >= 50 && strongMeaning) {
+    title = '有方向，但能量正在透支';
+    summary = '你并不是缺少目标感，反而可能很在乎自己想做好的事。现在更关键的是保护精力与边界，不要让“有意义”变成必须一直撑住。';
+  } else if (burnoutMax >= 50 && lowPresence && activeSearch) {
+    title = '先恢复状态，再给探索一点空间';
+    summary = '你可能一边疲惫，一边还在努力想清楚什么才是重要的。现在先把恢复放回前面，通常会比逼自己立刻得出答案更有效。';
+  } else if (burnoutMax >= 50 && lowMeaning) {
+    title = '先恢复状态，再重新找回方向';
+    summary = '目前不只是累，也可能对很多事提不起意义感。这个阶段先把恢复、睡眠、节奏和支持系统排回前面，会比逼自己立刻想清楚更有帮助。';
+  } else if (burnoutMax >= 50) {
+    title = '需要减压，也需要重新对齐重点';
+    summary = '结果显示你已经有明显倦怠。现在最有价值的不是再加努力，而是先减少消耗，再把有限精力留给真正重要的事。';
+  } else if (burnoutMax >= 25 && strongMeaning) {
+    title = '方向还在，但要防止慢性消耗';
+    summary = '你仍有一定意义感，不过压力已经开始侵蚀恢复能力。这个阶段最值得做的是提早调整，而不是等到完全耗尽。';
+  } else if (burnoutMax >= 25 && lowPresence && activeSearch) {
+    title = '还在寻找方向，也要避免继续透支';
+    summary = '你可能还在摸索什么值得投入，而压力已经开始影响恢复感。先让生活节奏稳一点，探索才会更清楚。';
+  } else if (burnoutMax >= 25 && lowMeaning) {
+    title = '状态还能支撑，但内在感受需要被照顾';
+    summary = '你可能还在继续运转，但满足感和意义感并不高。此时需要的未必是更努力，而是更诚实地看见自己真正想保留什么。';
+  } else if (burnoutMax < 25 && strongMeaning) {
+    title = '基础状态稳定，可以把好状态变成节奏';
+    summary = '目前你的能量和意义感都相对稳。接下来重点不是大改，而是把这些有效做法变成可持续、可重复的日常节奏。';
+  } else if (burnoutMax < 25 && lowPresence && activeSearch) {
+    title = '状态还可以，方向仍在探索中';
+    summary = '你的身体与工作状态未必是最急迫的问题，但你可能仍在摸索什么值得长期投入。现在适合用低压力的方式慢慢试，不必急着定论。';
+  } else if (burnoutMax < 25 && lowMeaning) {
+    title = '身体状态还可以，但方向仍值得整理';
+    summary = '你并不一定很疲惫，但还没有建立稳定的目标感与满足感。适合用低压力、可持续的方式慢慢厘清自己重视的事。';
+  } else {
+    title = '你正处在调整中的中间地带';
+    summary = '结果没有显示极端风险，但也不是完全稳定。把这次测验当成一次校准：看看哪些部分在消耗你，哪些部分还在支持你。';
+  }
+
+  if (burnoutMax >= 50) {
+    pushUnique(focuses, '先降低整体消耗', 3);
+  } else if (burnoutMax >= 25) {
+    pushUnique(focuses, '提早调整节奏', 3);
+  } else {
+    pushUnique(focuses, '维持稳定节奏', 3);
+  }
+
+  if (workHeavier && cbiWork >= 25) {
+    pushUnique(focuses, '工作边界与负荷', 3);
+  } else if (personalHeavier && cbiPersonal >= 25) {
+    pushUnique(focuses, '恢复精力与睡眠', 3);
+  }
+
+  if (ikigai < 27) {
+    pushUnique(focuses, '增加日常满足感', 3);
+  } else if (ikigai >= 36) {
+    pushUnique(focuses, '保留让你有活力的事', 3);
+  }
+
+  if (lowPresence) {
+    pushUnique(focuses, '澄清价值与方向', 3);
+  } else if (mlqPresence >= 24) {
+    pushUnique(focuses, '让目标感保持可持续', 3);
+  }
+
+  if (activeSearch && !strongMeaning) {
+    pushUnique(focuses, '把探索变成可尝试的小实验', 3);
+  }
+
+  if (burnoutMax >= 50) {
+    pushAction(actions, '先删掉一件事', '本周找出一件可以延后、委派，或缩小范围的责任，先把总负荷降下来。');
+    pushPrompt(prompts, '最近最持续让我耗电的是什么？其中哪一部分其实可以减一点？');
+  }
+
+  if (workHeavier && cbiWork >= 25) {
+    pushAction(actions, '重设一个工作边界', '挑出一个最消耗你的任务、时段或讯息来源，决定一个更明确的边界动作。');
+    pushPrompt(prompts, '我现在最需要保护的工作边界是什么？如果不保护，会继续发生什么？');
+  }
+
+  if (personalHeavier && cbiPersonal >= 25) {
+    pushAction(actions, '安排真正可恢复的时段', '在日历上预留一段 60–90 分钟，只做恢复，不处理待办，也不拿它来补工作。');
+    pushPrompt(prompts, '什么样的休息会让我真的回到身体里，而不是只是暂停一下？');
+  }
+
+  if (ikigai < 27) {
+    pushAction(actions, '记录有感觉的片刻', '连续三天写下 3 个让你稍微觉得充实、轻松或被照顾到的小片刻。');
+    pushPrompt(prompts, '当我觉得这一天还算值得时，通常发生了什么？');
+  }
+
+  if (lowPresence) {
+    pushAction(actions, '写下三个价值词', '先不要急着找长期答案，只写下现在最想守住的 3 个价值词，例如稳定、成长、关系或自由。');
+    pushPrompt(prompts, '如果我现在只能先对齐一件真正重要的事，那会是什么？');
+  }
+
+  if (activeSearch && !strongMeaning) {
+    pushAction(actions, '把探索变成一个小实验', '挑一个你最近反复在意的主题，用一周做一个很小的尝试，而不是继续停留在脑内分析。');
+    pushPrompt(prompts, '最近反复吸引我的主题是什么？我能不能先试一点，而不是一次想清楚？');
+  }
+
+  if (strongMeaning && burnoutMax >= 50) {
+    pushAction(actions, '别把“有意义”变成“只能硬撑”', '选一件你很在乎的承诺，想想怎么把它做得更轻一点，而不是继续全扛在自己身上。');
+    pushPrompt(prompts, '我是不是把“重要的事”都默默变成必须由我撑住？');
+  }
+
+  if (strongMeaning && burnoutMax < 25) {
+    pushAction(actions, '把有效做法固定下来', '写下最近最帮助你维持状态的一件事，并安排下周固定重复一次。');
+    pushPrompt(prompts, '哪些习惯正在支持我？我要怎样把它们保留下来？');
+  }
+
+  pushAction(actions, '只保留一个本周重点', '把接下来一周最值得投入的一件事写下来，其余事情先以“够用”标准处理。');
+  pushAction(actions, '找一个人说清楚近况', '如果可以，和一个可信任的人聊聊最近的消耗、优先顺序，或你想重新守住的界线。');
+  pushAction(actions, '写下一句本周照顾原则', '用一句短话提醒自己这一周最想守住什么，例如“先睡够，再谈效率”或“下班后不继续补工作”。');
+
+  pushPrompt(prompts, '如果下周只能改善一件事，我最想先改变什么？');
+  pushPrompt(prompts, '三个月后的自己，会感谢现在的我先处理哪一件事？');
+  pushPrompt(prompts, '这一周，什么会是对我来说真正“够好”的状态？');
+
+  return {
+    title: title,
+    summary: summary,
+    focuses: focuses.slice(0, 3),
+    actions: actions.slice(0, 3),
+    prompts: prompts.slice(0, 3)
   };
 }
 
@@ -791,6 +1097,44 @@ function renderInterpretations(items) {
       + '<span class="interp-level ' + interp.cls + '">' + interp.level + '</span>'
       + '<div class="interp-desc">' + interp.desc + '</div>';
     grid.appendChild(div);
+  });
+
+  panel.classList.add('visible');
+}
+
+function renderStory(guide) {
+  var panel = document.getElementById('story-panel');
+  var focusEl = document.getElementById('story-focus');
+  var actionsEl = document.getElementById('story-actions');
+  var promptsEl = document.getElementById('story-prompts');
+
+  document.getElementById('story-title').textContent = guide.title;
+  document.getElementById('story-summary').textContent = guide.summary;
+  focusEl.innerHTML = '';
+  actionsEl.innerHTML = '';
+  promptsEl.innerHTML = '';
+
+  guide.focuses.forEach(function(focus) {
+    var tag = document.createElement('div');
+    tag.className = 'story-tag';
+    tag.textContent = focus;
+    focusEl.appendChild(tag);
+  });
+
+  guide.actions.forEach(function(action, idx) {
+    var div = document.createElement('div');
+    div.className = 'story-item';
+    div.innerHTML = '<div class="story-item-title">' + (idx + 1) + '. ' + action.title + '</div>'
+      + '<div class="story-item-body">' + action.body + '</div>';
+    actionsEl.appendChild(div);
+  });
+
+  guide.prompts.forEach(function(prompt, idx) {
+    var div = document.createElement('div');
+    div.className = 'story-item';
+    div.innerHTML = '<div class="story-item-title">' + (idx + 1) + '. 反思问题</div>'
+      + '<div class="story-item-body">' + prompt + '</div>';
+    promptsEl.appendChild(div);
   });
 
   panel.classList.add('visible');
@@ -857,6 +1201,7 @@ function getTimestamp(date) {
 
 function buildExportSummary() {
   var state = getResultState();
+  var guide = getGuideData(state);
   var now = new Date();
   var lines = [
     '身心健康评估摘要',
@@ -885,6 +1230,24 @@ function buildExportSummary() {
     }
     lines.push('');
   });
+
+  if (guide) {
+    lines.push('结果导读: ' + guide.title);
+    lines.push(guide.summary);
+    lines.push('');
+    lines.push('建议先关注: ' + guide.focuses.join('、'));
+    lines.push('');
+    lines.push('本周可以试的动作:');
+    guide.actions.forEach(function(action, idx) {
+      lines.push((idx + 1) + '. ' + action.title + ': ' + action.body);
+    });
+    lines.push('');
+    lines.push('给自己的反思问题:');
+    guide.prompts.forEach(function(prompt, idx) {
+      lines.push((idx + 1) + '. ' + prompt);
+    });
+    lines.push('');
+  }
 
   lines.push('说明: 此结果仅供自我反思，不构成医疗或临床建议。');
   lines.push('数据仅在浏览器内处理。');
@@ -946,11 +1309,17 @@ function calc() {
   document.getElementById('reset-btn').disabled = state.answered === 0;
 
   var panel = document.getElementById('interp-panel');
+  var storyPanel = document.getElementById('story-panel');
   if (state.allDone) {
     renderInterpretations(state.items);
+    renderStory(getGuideData(state));
   } else {
     panel.classList.remove('visible');
     document.getElementById('interp-grid').innerHTML = '';
+    storyPanel.classList.remove('visible');
+    document.getElementById('story-focus').innerHTML = '';
+    document.getElementById('story-actions').innerHTML = '';
+    document.getElementById('story-prompts').innerHTML = '';
   }
 }
 

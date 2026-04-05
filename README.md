@@ -19,6 +19,7 @@ An interactive, single-page web app for self-assessment using three validated ps
 - Progress autosaves in your browser and restores after refresh
 - Reverse-scored items handled automatically
 - Interpretation labels shown after all questions are answered
+- Completed results include a short guidance profile, suggested focus areas, 3 small next steps, and reflection prompts
 - Exportable text summary for personal records or reflection
 - One-click reset to start over
 - Responsive, works on mobile and desktop
@@ -41,4 +42,4 @@ All responses are processed entirely in the browser. No data is transmitted or l
 
 ---
 
-*For personal reflection and educational use only. For research or clinical use, please refer to the original validated instruments.*
+*For personal reflection and educational use only. The guidance in this app is designed to help users interpret their own scores and plan small next steps; it is not medical, therapeutic, or clinical advice. For research or clinical use, please refer to the original validated instruments.*
