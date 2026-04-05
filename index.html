@@ -442,7 +442,7 @@
 </footer>
 
 <script>
-var TOTAL = 26;
+var TOTAL = 0;
 var STORAGE_KEY = 'self-reflection-survey-answers-v1';
 var ans = {};
 var storageEnabled = true;
@@ -492,7 +492,8 @@ var mlqQs = [
   {en:"I am searching for meaning in my life.", zh:"我在寻找生命的意义"}
 ];
 
-var cbiOpts = [["Never",0],["Seldom",25],["Some",50],["Often",75],["Always",100]];
+var cbiOpts = [["Never",0],["Seldom",25],["Sometimes",50],["Often",75],["Always",100]];
+TOTAL = ikigaiQs.length + cbi1Qs.length + cbi2Qs.length + mlqQs.length;
 var validKeys = buildValidKeys();
 
 function buildValidKeys() {
@@ -580,7 +581,6 @@ function persistAnswers() {
 }
 
 function clearSavedAnswers() {
-  if (!storageEnabled) { return; }
   try {
     window.localStorage.removeItem(STORAGE_KEY);
   } catch (err) {}
