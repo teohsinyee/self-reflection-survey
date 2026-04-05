@@ -210,6 +210,10 @@
   .q-btn.active-green { background: var(--green); border-color: var(--green); color: #fff; font-weight: 500; }
   .q-btn.active-purple { background: var(--purple); border-color: var(--purple); color: #fff; font-weight: 500; }
   .q-btn.active-amber { background: var(--amber); border-color: var(--amber); color: #fff; font-weight: 500; }
+  .q-btn.cbi-btn {
+    font-size: 12px;
+    padding: 0 10px;
+  }
 
   /* Results */
   .results-wrap {
@@ -224,13 +228,61 @@
     padding: 20px 22px;
     box-shadow: var(--shadow);
   }
+  .results-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 620px) {
+    .results-top {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
   .results-label {
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: var(--text-3);
-    margin-bottom: 14px;
+    margin-bottom: 4px;
+  }
+  .results-note {
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .results-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 999px;
+    height: 34px;
+    padding: 0 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+  }
+  .action-btn:hover:not(:disabled) {
+    background: var(--surface);
+    border-color: #bbb;
+  }
+  .action-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .results-footnote {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-3);
   }
   .scores-row {
     display: grid;
@@ -272,9 +324,9 @@
   .interp-name { font-size: 11px; font-weight: 500; color: var(--text-2); margin-bottom: 2px; }
   .interp-desc { font-size: 12px; color: var(--text-3); line-height: 1.5; }
   .interp-level { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 999px; margin-bottom: 4px; }
-  .level-low { background: #EBF5EF; color: var(--green); }
-  .level-mid { background: #FBF3E4; color: var(--amber); }
-  .level-high { background: #FCEAEA; color: var(--red); }
+  .level-positive { background: #EBF5EF; color: var(--green); }
+  .level-neutral { background: #FBF3E4; color: var(--amber); }
+  .level-attention { background: #FCEAEA; color: var(--red); }
 
   /* Footer */
   footer {
@@ -340,7 +392,16 @@
   <!-- Results -->
   <div class="results-wrap">
     <div class="results-card">
-      <div class="results-label">计分结果（实时更新）</div>
+      <div class="results-top">
+        <div>
+          <div class="results-label">计分结果（实时更新）</div>
+          <div class="results-note" id="save-note">自动保存在此浏览器</div>
+        </div>
+        <div class="results-actions">
+          <button type="button" class="action-btn" id="export-btn" disabled>导出摘要</button>
+          <button type="button" class="action-btn" id="reset-btn" disabled>重新开始</button>
+        </div>
+      </div>
       <div class="scores-row">
         <div class="score-tile">
           <div class="score-tile-label">Ikigai-9<br>意义感</div>
@@ -370,6 +431,7 @@
       <div class="interp" id="interp-panel">
         <div class="interp-grid" id="interp-grid"></div>
       </div>
+      <div class="results-footnote">带有 * 的分数代表该量表尚未完成，结果仍会继续变化。</div>
     </div>
   </div>
 </main>
@@ -380,8 +442,11 @@
 </footer>
 
 <script>
-var ans = {};
 var TOTAL = 26;
+var STORAGE_KEY = 'self-reflection-survey-answers-v1';
+var ans = {};
+var storageEnabled = true;
+var saveNoteTimer = null;
 
 var ikigaiQs = [
   {en:"I lead a life that is full and satisfying", zh:"我过着充实且满足的生活"},
@@ -428,8 +493,109 @@ var mlqQs = [
 ];
 
 var cbiOpts = [["Never",0],["Seldom",25],["Some",50],["Often",75],["Always",100]];
+var validKeys = buildValidKeys();
 
-function buildScale(containerId, prefix, n, cls, questions) {
+function buildValidKeys() {
+  var keys = {};
+  var i;
+  for (i = 1; i <= 9; i++) { keys['i' + i] = true; }
+  for (i = 1; i <= 6; i++) { keys['c1_' + i] = true; }
+  for (i = 1; i <= 7; i++) { keys['c2_' + i] = true; }
+  for (i = 1; i <= 10; i++) { keys['m' + i] = true; }
+  return keys;
+}
+
+function isStorageAvailable() {
+  try {
+    var testKey = STORAGE_KEY + '-test';
+    window.localStorage.setItem(testKey, '1');
+    window.localStorage.removeItem(testKey);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getDefaultSaveNote() {
+  return storageEnabled ? '自动保存在此浏览器' : '浏览器暂存不可用';
+}
+
+function setSaveNote(message, temporary) {
+  var note = document.getElementById('save-note');
+  if (!note) { return; }
+  note.textContent = message;
+  if (saveNoteTimer) {
+    window.clearTimeout(saveNoteTimer);
+    saveNoteTimer = null;
+  }
+  if (temporary) {
+    saveNoteTimer = window.setTimeout(function() {
+      note.textContent = getDefaultSaveNote();
+      saveNoteTimer = null;
+    }, 2400);
+  }
+}
+
+function isValidStoredAnswer(key, value) {
+  if (key.indexOf('c1_') === 0 || key.indexOf('c2_') === 0) {
+    return cbiOpts.some(function(opt) { return opt[1] === value; });
+  }
+  if (key.charAt(0) === 'i') {
+    return value >= 1 && value <= 5;
+  }
+  if (key.charAt(0) === 'm') {
+    return value >= 1 && value <= 7;
+  }
+  return false;
+}
+
+function loadSavedAnswers() {
+  if (!storageEnabled) { return {}; }
+  try {
+    var raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) { return {}; }
+    var parsed = JSON.parse(raw);
+    var restored = {};
+    if (!parsed || typeof parsed !== 'object') { return restored; }
+    Object.keys(parsed).forEach(function(key) {
+      var value = Number(parsed[key]);
+      if (validKeys[key] && !isNaN(value) && isValidStoredAnswer(key, value)) {
+        restored[key] = value;
+      }
+    });
+    return restored;
+  } catch (err) {
+    return {};
+  }
+}
+
+function persistAnswers() {
+  if (!storageEnabled) { return; }
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ans));
+  } catch (err) {
+    storageEnabled = false;
+    setSaveNote(getDefaultSaveNote());
+  }
+}
+
+function clearSavedAnswers() {
+  if (!storageEnabled) { return; }
+  try {
+    window.localStorage.removeItem(STORAGE_KEY);
+  } catch (err) {}
+}
+
+function setButtonsState(btns, target, activeClass) {
+  btns.querySelectorAll('.q-btn').forEach(function(btn) {
+    btn.className = btn.getAttribute('data-base-class') || 'q-btn';
+    btn.setAttribute('aria-pressed', 'false');
+  });
+  target.className = (target.getAttribute('data-base-class') || 'q-btn') + ' ' + activeClass;
+  target.setAttribute('aria-pressed', 'true');
+}
+
+function buildScale(containerId, prefix, maxScore, activeClass, questions) {
   var wrap = document.getElementById(containerId);
   questions.forEach(function(q, idx) {
     var key = prefix + (idx + 1);
@@ -467,17 +633,22 @@ function buildScale(containerId, prefix, n, cls, questions) {
 
     var btns = document.createElement('div');
     btns.className = 'q-btns';
-    for (var i = 1; i <= n; i++) {
+    for (var i = 1; i <= maxScore; i++) {
       (function(val) {
         var b = document.createElement('button');
-        b.className = 'q-btn';
+        var baseClass = 'q-btn';
+        b.type = 'button';
+        b.className = baseClass;
         b.textContent = val;
         b.setAttribute('aria-label', 'Score ' + val);
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('data-base-class', baseClass);
+        b.setAttribute('data-value', val);
         b.onclick = function() {
-          btns.querySelectorAll('.q-btn').forEach(function(x){ x.className = 'q-btn'; });
-          this.className = 'q-btn ' + cls;
-          ans[key] = q.rev ? (n + 1 - val) : val;
+          setButtonsState(btns, b, activeClass);
+          ans[key] = q.rev ? (maxScore + 1 - val) : val;
           document.getElementById('card-' + key).classList.add('answered');
+          persistAnswers();
           calc();
         };
         btns.appendChild(b);
@@ -525,15 +696,19 @@ function buildCBI(containerId, prefix, questions) {
     btns.className = 'q-btns';
     cbiOpts.forEach(function(opt) {
       var b = document.createElement('button');
-      b.className = 'q-btn';
+      var baseClass = 'q-btn cbi-btn';
+      b.type = 'button';
+      b.className = baseClass;
       b.textContent = opt[0];
-      b.style.fontSize = '12px';
-      b.style.padding = '0 10px';
+      b.setAttribute('aria-label', opt[0] + ' (' + opt[1] + ')');
+      b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('data-base-class', baseClass);
+      b.setAttribute('data-value', opt[1]);
       b.onclick = function() {
-        btns.querySelectorAll('.q-btn').forEach(function(x){ x.className = 'q-btn'; x.style.fontSize='12px'; x.style.padding='0 10px'; });
-        this.className = 'q-btn active-purple';
+        setButtonsState(btns, b, 'active-purple');
         ans[key] = q.rev ? (100 - opt[1]) : opt[1];
         document.getElementById('card-' + key).classList.add('answered');
+        persistAnswers();
         calc();
       };
       btns.appendChild(b);
@@ -543,92 +718,255 @@ function buildCBI(containerId, prefix, questions) {
   });
 }
 
-function getInterp(label, val, type) {
+function getInterp(type, val) {
+  if (val === null || val === undefined) { return null; }
   if (type === 'ikigai') {
-    if (val >= 36) return {level:'high', cls:'level-high', desc:'意义感充足，生活满足度高'};
-    if (val >= 27) return {level:'mid', cls:'level-mid', desc:'中等意义感，有提升空间'};
-    return {level:'low', cls:'level-low', desc:'意义感较低，建议关注内在需求'};
+    if (val >= 36) { return {level:'良好', cls:'level-positive', desc:'意义感充足，生活满足度较高'}; }
+    if (val >= 27) { return {level:'中等', cls:'level-neutral', desc:'中等意义感，仍有提升空间'}; }
+    return {level:'偏低', cls:'level-attention', desc:'意义感较低，建议留意内在需求与生活节奏'};
   }
   if (type === 'cbi') {
-    if (val >= 50) return {level:'高倦怠', cls:'level-high', desc:'倦怠程度较高，建议休息与调整'};
-    if (val >= 25) return {level:'中等', cls:'level-mid', desc:'有倦怠迹象，需注意自我照顾'};
-    return {level:'良好', cls:'level-low', desc:'倦怠程度低，状态较佳'};
+    if (val >= 50) { return {level:'高倦怠', cls:'level-attention', desc:'倦怠程度较高，建议优先安排休息与调整'}; }
+    if (val >= 25) { return {level:'中等', cls:'level-neutral', desc:'已有倦怠迹象，需注意自我照顾'}; }
+    return {level:'良好', cls:'level-positive', desc:'倦怠程度低，当前状态较佳'};
   }
   if (type === 'mlq') {
-    if (val >= 48) return {level:'高', cls:'level-high', desc:'生命意义感强，目标清晰'};
-    if (val >= 30) return {level:'中等', cls:'level-mid', desc:'正在探索生命意义'};
-    return {level:'低', cls:'level-low', desc:'意义感较弱，建议探索自身价值'};
+    if (val >= 48) { return {level:'良好', cls:'level-positive', desc:'生命意义感较强，方向与目标相对清晰'}; }
+    if (val >= 30) { return {level:'中等', cls:'level-neutral', desc:'正在探索生命意义，仍在形成稳定感'}; }
+    return {level:'偏低', cls:'level-attention', desc:'意义感较弱，建议逐步探索重视的价值与目标'};
   }
+  return null;
+}
+
+function getScaleTotal(prefix, count) {
+  var total = 0;
+  var answered = 0;
+  for (var i = 1; i <= count; i++) {
+    if (ans[prefix + i] !== undefined) {
+      total += ans[prefix + i];
+      answered++;
+    }
+  }
+  return {value: answered ? total : null, answered: answered, complete: answered === count};
+}
+
+function getScaleAverage(prefix, count) {
+  var stats = getScaleTotal(prefix, count);
+  return {
+    value: stats.answered ? Math.round(stats.value / stats.answered) : null,
+    answered: stats.answered,
+    complete: stats.complete
+  };
+}
+
+function getResultState() {
+  var ikigai = getScaleTotal('i', 9);
+  var cbiPersonal = getScaleAverage('c1_', 6);
+  var cbiWork = getScaleAverage('c2_', 7);
+  var mlq = getScaleTotal('m', 10);
+
+  return {
+    answered: Object.keys(ans).length,
+    allDone: ikigai.complete && cbiPersonal.complete && cbiWork.complete && mlq.complete,
+    items: [
+      {name:'Ikigai-9 意义感', val:ikigai.value, type:'ikigai', scoreLabel:'总分', max:45, complete:ikigai.complete, textId:'r-iki', barId:'b-iki'},
+      {name:'CBI 个人倦怠', val:cbiPersonal.value, type:'cbi', scoreLabel:'均值', max:100, complete:cbiPersonal.complete, textId:'r-c1', barId:'b-c1'},
+      {name:'CBI 工作倦怠', val:cbiWork.value, type:'cbi', scoreLabel:'均值', max:100, complete:cbiWork.complete, textId:'r-c2', barId:'b-c2'},
+      {name:'MLQ 生命意义', val:mlq.value, type:'mlq', scoreLabel:'总分', max:70, complete:mlq.complete, textId:'r-mlq', barId:'b-mlq'}
+    ]
+  };
+}
+
+function renderInterpretations(items) {
+  var panel = document.getElementById('interp-panel');
+  var grid = document.getElementById('interp-grid');
+  grid.innerHTML = '';
+
+  items.forEach(function(item) {
+    var interp = getInterp(item.type, item.val);
+    if (!interp) { return; }
+    var div = document.createElement('div');
+    div.className = 'interp-item';
+    div.innerHTML = '<div class="interp-name">' + item.name + ' &nbsp;<span style="font-weight:300;color:var(--text-3)">' + item.scoreLabel + ' ' + item.val + ' / ' + item.max + '</span></div>'
+      + '<span class="interp-level ' + interp.cls + '">' + interp.level + '</span>'
+      + '<div class="interp-desc">' + interp.desc + '</div>';
+    grid.appendChild(div);
+  });
+
+  panel.classList.add('visible');
+}
+
+function restoreButtonSelection(key, rawValue, activeClass) {
+  var card = document.getElementById('card-' + key);
+  if (!card) { return; }
+  var btns = card.querySelector('.q-btns');
+  if (!btns) { return; }
+  var target = btns.querySelector('[data-value="' + rawValue + '"]');
+  if (!target) { return; }
+  setButtonsState(btns, target, activeClass);
+  card.classList.add('answered');
+}
+
+function restoreSavedAnswers() {
+  ans = loadSavedAnswers();
+  if (!Object.keys(ans).length) { return; }
+
+  ikigaiQs.forEach(function(q, idx) {
+    var key = 'i' + (idx + 1);
+    if (ans[key] !== undefined) {
+      restoreButtonSelection(key, q.rev ? (6 - ans[key]) : ans[key], 'active-green');
+    }
+  });
+
+  cbi1Qs.forEach(function(q, idx) {
+    var key = 'c1_' + (idx + 1);
+    if (ans[key] !== undefined) {
+      restoreButtonSelection(key, q.rev ? (100 - ans[key]) : ans[key], 'active-purple');
+    }
+  });
+
+  cbi2Qs.forEach(function(q, idx) {
+    var key = 'c2_' + (idx + 1);
+    if (ans[key] !== undefined) {
+      restoreButtonSelection(key, q.rev ? (100 - ans[key]) : ans[key], 'active-purple');
+    }
+  });
+
+  mlqQs.forEach(function(q, idx) {
+    var key = 'm' + (idx + 1);
+    if (ans[key] !== undefined) {
+      restoreButtonSelection(key, q.rev ? (8 - ans[key]) : ans[key], 'active-amber');
+    }
+  });
+
+  setSaveNote('已恢复上次填写进度', true);
+}
+
+function padNumber(num) {
+  return String(num).padStart(2, '0');
+}
+
+function getDateStamp(date) {
+  return date.getFullYear() + '-' + padNumber(date.getMonth() + 1) + '-' + padNumber(date.getDate());
+}
+
+function getTimestamp(date) {
+  return date.getFullYear() + '-' + padNumber(date.getMonth() + 1) + '-' + padNumber(date.getDate()) + ' '
+    + padNumber(date.getHours()) + ':' + padNumber(date.getMinutes());
+}
+
+function buildExportSummary() {
+  var state = getResultState();
+  var now = new Date();
+  var lines = [
+    '身心健康评估摘要',
+    '',
+    '导出时间: ' + getTimestamp(now),
+    '完成题数: ' + state.answered + ' / ' + TOTAL,
+    '状态: ' + (state.allDone ? '已完成全部题目' : '尚未完成全部题目'),
+    ''
+  ];
+
+  state.items.forEach(function(item) {
+    if (item.val === null) {
+      lines.push(item.name + ': 尚未作答');
+      lines.push('');
+      return;
+    }
+
+    var interp = getInterp(item.type, item.val);
+    var scoreLine = item.name + ': ' + item.scoreLabel + ' ' + item.val + ' / ' + item.max;
+    if (!item.complete) {
+      scoreLine += '（暂时结果）';
+    }
+    lines.push(scoreLine);
+    if (interp) {
+      lines.push('解读: ' + interp.level + ' - ' + interp.desc);
+    }
+    lines.push('');
+  });
+
+  lines.push('说明: 此结果仅供自我反思，不构成医疗或临床建议。');
+  lines.push('数据仅在浏览器内处理。');
+  return {text: lines.join('\n'), fileName: 'self-reflection-summary-' + getDateStamp(now) + '.txt'};
+}
+
+function exportSummary() {
+  var state = getResultState();
+  if (!state.answered) { return; }
+
+  var exportData = buildExportSummary();
+  var blob = new Blob([exportData.text], {type: 'text/plain;charset=utf-8'});
+  var url = window.URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = exportData.fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+  setSaveNote('已导出摘要', true);
+}
+
+function resetSurvey() {
+  if (!Object.keys(ans).length) { return; }
+  if (!window.confirm('确定要清除所有答案并重新开始吗？')) { return; }
+
+  ans = {};
+  clearSavedAnswers();
+  document.querySelectorAll('.q-card').forEach(function(card) {
+    card.classList.remove('answered');
+  });
+  document.querySelectorAll('.q-btn').forEach(function(btn) {
+    btn.className = btn.getAttribute('data-base-class') || 'q-btn';
+    btn.setAttribute('aria-pressed', 'false');
+  });
+  calc();
+  setSaveNote('已清除本机暂存', true);
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function calc() {
-  var answered = Object.keys(ans).length;
-  document.getElementById('progress-pill').textContent = answered + ' / ' + TOTAL + ' 已填';
+  var state = getResultState();
+  document.getElementById('progress-pill').textContent = state.answered + ' / ' + TOTAL + ' 已填';
 
-  // Ikigai
-  var iSum = 0, iN = 0;
-  for (var i = 1; i <= 9; i++) { if (ans['i'+i] !== undefined) { iSum += ans['i'+i]; iN++; } }
-  if (iN > 0) {
-    document.getElementById('r-iki').textContent = iSum + (iN < 9 ? ' *' : '');
-    document.getElementById('b-iki').style.width = Math.round(iSum / 45 * 100) + '%';
-  }
+  state.items.forEach(function(item) {
+    var valueEl = document.getElementById(item.textId);
+    var barEl = document.getElementById(item.barId);
+    if (item.val === null) {
+      valueEl.textContent = '—';
+      barEl.style.width = '0';
+      return;
+    }
+    valueEl.textContent = item.val + (item.complete ? '' : ' *');
+    barEl.style.width = Math.round(item.val / item.max * 100) + '%';
+  });
 
-  // CBI1
-  var c1s = 0, c1n = 0;
-  for (var i = 1; i <= 6; i++) { if (ans['c1_'+i] !== undefined) { c1s += ans['c1_'+i]; c1n++; } }
-  var c1avg = c1n > 0 ? Math.round(c1s / c1n) : null;
-  if (c1n > 0) {
-    document.getElementById('r-c1').textContent = c1avg + (c1n < 6 ? ' *' : '');
-    document.getElementById('b-c1').style.width = c1avg + '%';
-  }
+  document.getElementById('export-btn').disabled = state.answered === 0;
+  document.getElementById('reset-btn').disabled = state.answered === 0;
 
-  // CBI2
-  var c2s = 0, c2n = 0;
-  for (var i = 1; i <= 7; i++) { if (ans['c2_'+i] !== undefined) { c2s += ans['c2_'+i]; c2n++; } }
-  var c2avg = c2n > 0 ? Math.round(c2s / c2n) : null;
-  if (c2n > 0) {
-    document.getElementById('r-c2').textContent = c2avg + (c2n < 7 ? ' *' : '');
-    document.getElementById('b-c2').style.width = c2avg + '%';
-  }
-
-  // MLQ
-  var mSum = 0, mN = 0;
-  for (var i = 1; i <= 10; i++) { if (ans['m'+i] !== undefined) { mSum += ans['m'+i]; mN++; } }
-  if (mN > 0) {
-    document.getElementById('r-mlq').textContent = mSum + (mN < 10 ? ' *' : '');
-    document.getElementById('b-mlq').style.width = Math.round(mSum / 70 * 100) + '%';
-  }
-
-  // Show interpretation if all complete
-  var allDone = iN === 9 && c1n === 6 && c2n === 7 && mN === 10;
   var panel = document.getElementById('interp-panel');
-  if (allDone) {
-    panel.classList.add('visible');
-    var grid = document.getElementById('interp-grid');
-    grid.innerHTML = '';
-    var items = [
-      {name:'Ikigai-9 意义感', val:iSum, type:'ikigai', score:'总分 ' + iSum + ' / 45'},
-      {name:'CBI 个人倦怠', val:c1avg, type:'cbi', score:'均值 ' + c1avg + ' / 100'},
-      {name:'CBI 工作倦怠', val:c2avg, type:'cbi', score:'均值 ' + c2avg + ' / 100'},
-      {name:'MLQ 生命意义', val:mSum, type:'mlq', score:'总分 ' + mSum + ' / 70'}
-    ];
-    items.forEach(function(item) {
-      var interp = getInterp(item.name, item.val, item.type);
-      var div = document.createElement('div');
-      div.className = 'interp-item';
-      div.innerHTML = '<div class="interp-name">' + item.name + ' &nbsp;<span style="font-weight:300;color:var(--text-3)">' + item.score + '</span></div>'
-        + '<span class="interp-level ' + interp.cls + '">' + interp.level + '</span>'
-        + '<div class="interp-desc">' + interp.desc + '</div>';
-      grid.appendChild(div);
-    });
+  if (state.allDone) {
+    renderInterpretations(state.items);
+  } else {
+    panel.classList.remove('visible');
+    document.getElementById('interp-grid').innerHTML = '';
   }
 }
 
-// Build all questions
+storageEnabled = isStorageAvailable();
+setSaveNote(getDefaultSaveNote());
+
 buildScale('ikigai-qs', 'i', 5, 'active-green', ikigaiQs);
 buildCBI('cbi1-qs', 'c1_', cbi1Qs);
 buildCBI('cbi2-qs', 'c2_', cbi2Qs);
 buildScale('mlq-qs', 'm', 7, 'active-amber', mlqQs);
+
+document.getElementById('export-btn').onclick = exportSummary;
+document.getElementById('reset-btn').onclick = resetSurvey;
+
+restoreSavedAnswers();
+calc();
 </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 An interactive, single-page web app for self-assessment using three validated psychological scales.
 
-**Live demo:** `https://<your-username>.github.io/<repo-name>/`
+**Live demo:** `https://teohsinyee.github.io/self-reflection-survey/`
 
 ## Scales included
 
@@ -16,8 +16,11 @@ An interactive, single-page web app for self-assessment using three validated ps
 
 - Fully client-side — no data is sent to any server
 - Real-time scoring as you answer
+- Progress autosaves in your browser and restores after refresh
 - Reverse-scored items handled automatically
 - Interpretation labels shown after all questions are answered
+- Exportable text summary for personal records or reflection
+- One-click reset to start over
 - Responsive, works on mobile and desktop
 
 ## How to deploy on GitHub Pages
@@ -34,8 +37,8 @@ Just open `index.html` directly in any browser — no build step or server neede
 
 ## Privacy
 
-All responses are processed entirely in the browser. No data is stored, transmitted, or logged anywhere.
+All responses are processed entirely in the browser. No data is transmitted or logged anywhere. If autosave is available, answers are stored only in that browser's local storage until reset.
 
 ---
 
-*For research or clinical use, please refer to the original validated instruments.*
+*For personal reflection and educational use only. For research or clinical use, please refer to the original validated instruments.*
