@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>身心健康评估 · Self Reflection Survey</title>
+<title>自我整理问卷 · Self Reflection Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0;9..144,500..700,50&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F7F5F0;
@@ -521,8 +522,8 @@
         <div class="aside-sticky">
           <div class="aside-block">
             <div class="aside-label">Result rail</div>
-            <h2 class="aside-title">右侧会先更新分数，完成后导读会直接在这里展开。</h2>
-            <p class="aside-copy">你不需要再往页面最下面找建议。完成全部题目后，这张结果卡会直接显示导读、3 个建议动作，以及可展开的反思问题。</p>
+            <h2 class="aside-title">右侧先看分数，完整结果会在最后一题下方自动出现。</h2>
+            <p class="aside-copy">你不需要回头找结果。完成全部题目后，页面会把你带到问卷底部的完整结果区；右侧则保留即时分数和一句简短摘要。</p>
           </div>
 
           <div class="results-wrap">
@@ -563,23 +564,11 @@
                   <div class="score-bar"><div class="score-bar-fill fill-amber" id="b-mlq" style="width:0"></div></div>
                 </div>
               </div>
-              <div class="story" id="story-panel">
-                <div class="story-card">
-                  <div class="story-kicker">Guided next steps</div>
-                  <h3 class="story-title" id="story-title"></h3>
-                  <div class="story-summary" id="story-summary"></div>
-                  <div class="story-focus">
-                    <div class="story-subtitle">建议先关注</div>
-                    <div class="story-tags" id="story-focus"></div>
-                  </div>
-                  <div class="story-subtitle story-section-label">本周先做这 3 件事</div>
-                  <div class="story-list" id="story-actions"></div>
-                  <details class="story-details">
-                    <summary>展开反思问题</summary>
-                    <div class="story-list" id="story-prompts"></div>
-                  </details>
-                  <div class="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
-                </div>
+              <div class="guide-rail" id="guide-rail">
+                <div class="guide-rail-kicker">完成后先看到这句</div>
+                <div class="guide-rail-title" id="guide-rail-title">做完最后一题后，这里会先出现一句结果摘要。</div>
+                <div class="guide-rail-copy" id="guide-rail-summary">完整建议会直接出现在问卷底部，你不需要再回头找结果。</div>
+                <a class="guide-rail-link" id="guide-rail-link" href="#story-panel" hidden>跳到完整结果</a>
               </div>
               <div class="interp" id="interp-panel">
                 <div class="interp-grid" id="interp-grid"></div>
@@ -589,6 +578,31 @@
           </div>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="story story-bottom" id="story-panel" aria-live="polite">
+    <div class="story-shell">
+      <div class="story-card">
+        <div class="story-kicker">完整结果导读</div>
+        <h2 class="story-title" id="story-title"></h2>
+        <div class="story-summary" id="story-summary"></div>
+        <div class="story-focus">
+          <div class="story-subtitle">建议先关注</div>
+          <div class="story-tags" id="story-focus"></div>
+        </div>
+        <div class="story-grid">
+          <div class="story-col">
+            <div class="story-subtitle">本周先做这 3 件事</div>
+            <div class="story-list" id="story-actions"></div>
+          </div>
+          <div class="story-col">
+            <div class="story-subtitle">给自己的反思问题</div>
+            <div class="story-list" id="story-prompts"></div>
+          </div>
+        </div>
+        <div class="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
+      </div>
     </div>
   </section>
 </main>
@@ -606,6 +620,8 @@ var STORAGE_KEY = 'self-reflection-survey-answers-v1';
 var ans = {};
 var storageEnabled = true;
 var saveNoteTimer = null;
+var hasMounted = false;
+var previousAllDone = false;
 
 var ikigaiQs = [
   {en:"I lead a life that is full and satisfying", zh:"我过着充实且满足的生活"},
@@ -771,20 +787,20 @@ function buildScale(containerId, prefix, maxScore, activeClass, questions) {
 
     var textWrap = document.createElement('div');
     textWrap.className = 'q-text-wrap';
-    var en = document.createElement('div');
-    en.className = 'q-en';
-    en.textContent = q.en;
+    var zh = document.createElement('div');
+    zh.className = 'q-zh';
+    zh.textContent = q.zh;
     if (q.rev) {
       var tag = document.createElement('span');
       tag.className = 'rev-tag';
       tag.textContent = '反向';
-      en.appendChild(tag);
+      zh.appendChild(tag);
     }
-    var zh = document.createElement('div');
-    zh.className = 'q-zh';
-    zh.textContent = q.zh;
-    textWrap.appendChild(en);
+    var en = document.createElement('div');
+    en.className = 'q-en';
+    en.textContent = q.en;
     textWrap.appendChild(zh);
+    textWrap.appendChild(en);
 
     top.appendChild(num);
     top.appendChild(textWrap);
@@ -833,20 +849,20 @@ function buildCBI(containerId, prefix, questions) {
     num.textContent = idx + 1;
     var textWrap = document.createElement('div');
     textWrap.className = 'q-text-wrap';
-    var en = document.createElement('div');
-    en.className = 'q-en';
-    en.textContent = q.en;
+    var zh = document.createElement('div');
+    zh.className = 'q-zh';
+    zh.textContent = q.zh;
     if (q.rev) {
       var tag = document.createElement('span');
       tag.className = 'rev-tag';
       tag.textContent = '反向';
-      en.appendChild(tag);
+      zh.appendChild(tag);
     }
-    var zh = document.createElement('div');
-    zh.className = 'q-zh';
-    zh.textContent = q.zh;
-    textWrap.appendChild(en);
+    var en = document.createElement('div');
+    en.className = 'q-en';
+    en.textContent = q.en;
     textWrap.appendChild(zh);
+    textWrap.appendChild(en);
     top.appendChild(num);
     top.appendChild(textWrap);
     card.appendChild(top);
@@ -1180,6 +1196,29 @@ function renderStory(guide) {
   panel.classList.add('visible');
 }
 
+function renderGuideRail(guide) {
+  var rail = document.getElementById('guide-rail');
+  document.getElementById('guide-rail-title').textContent = guide.title;
+  document.getElementById('guide-rail-summary').textContent = guide.summary;
+  document.getElementById('guide-rail-link').hidden = false;
+  rail.classList.add('complete');
+}
+
+function resetGuideRail() {
+  var rail = document.getElementById('guide-rail');
+  document.getElementById('guide-rail-title').textContent = '做完最后一题后，这里会先出现一句结果摘要。';
+  document.getElementById('guide-rail-summary').textContent = '完整建议会直接出现在问卷底部，你不需要再回头找结果。';
+  document.getElementById('guide-rail-link').hidden = true;
+  rail.classList.remove('complete');
+}
+
+function getMotionBehavior() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return 'auto';
+  }
+  return 'smooth';
+}
+
 function restoreButtonSelection(key, rawValue, activeClass) {
   var card = document.getElementById('card-' + key);
   if (!card) { return; }
@@ -1244,7 +1283,7 @@ function buildExportSummary() {
   var guide = getGuideData(state);
   var now = new Date();
   var lines = [
-    '身心健康评估摘要',
+    '自我整理问卷摘要',
     '',
     '导出时间: ' + getTimestamp(now),
     '完成题数: ' + state.answered + ' / ' + TOTAL,
@@ -1331,6 +1370,7 @@ function resetSurvey() {
 
 function calc() {
   var state = getResultState();
+  var justCompleted = hasMounted && state.allDone && !previousAllDone;
   document.getElementById('progress-pill').textContent = state.answered + ' / ' + TOTAL + ' 已填';
 
   state.items.forEach(function(item) {
@@ -1351,20 +1391,33 @@ function calc() {
   var panel = document.getElementById('interp-panel');
   var storyPanel = document.getElementById('story-panel');
   if (state.allDone) {
+    var guide = getGuideData(state);
     renderInterpretations(state.items);
-    renderStory(getGuideData(state));
+    renderGuideRail(guide);
+    renderStory(guide);
+    if (justCompleted) {
+      window.setTimeout(function() {
+        storyPanel.scrollIntoView({behavior: getMotionBehavior(), block: 'start'});
+      }, 80);
+    }
   } else {
     panel.classList.remove('visible');
     document.getElementById('interp-grid').innerHTML = '';
+    resetGuideRail();
     storyPanel.classList.remove('visible');
+    document.getElementById('story-title').textContent = '';
+    document.getElementById('story-summary').textContent = '';
     document.getElementById('story-focus').innerHTML = '';
     document.getElementById('story-actions').innerHTML = '';
     document.getElementById('story-prompts').innerHTML = '';
   }
+
+  previousAllDone = state.allDone;
 }
 
 storageEnabled = isStorageAvailable();
 setSaveNote(getDefaultSaveNote());
+resetGuideRail();
 
 buildScale('ikigai-qs', 'i', 5, 'active-green', ikigaiQs);
 buildCBI('cbi1-qs', 'c1_', cbi1Qs);
@@ -1376,6 +1429,7 @@ document.getElementById('reset-btn').onclick = resetSurvey;
 
 restoreSavedAnswers();
 calc();
+hasMounted = true;
 </script>
 </body>
 </html>
