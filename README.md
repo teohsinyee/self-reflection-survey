@@ -4,6 +4,14 @@ An interactive, single-page web app for self-assessment using three validated ps
 
 **Live demo:** `https://teohsinyee.github.io/self-reflection-survey/`
 
+## Latest UI Snapshot
+
+![Current survey UI with completed results guidance](docs/screenshots/v2-actionable-results/results-guidance.png)
+
+This image shows the latest UI captured in the repository. If you are viewing an open PR branch, the GitHub Pages demo on `main` may still be one version behind until that PR is merged.
+
+See the [Version Gallery](docs/version-gallery.md) for archived screenshots of earlier versions and major UI changes.
+
 ## Scales included
 
 | Scale | Full name | Items | Scoring |
