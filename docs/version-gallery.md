@@ -25,6 +25,15 @@ Each entry should point back to an immutable reference such as a commit SHA, mer
 
 ![v2 actionable results guidance screenshot](screenshots/v2-actionable-results/results-guidance.png)
 
+## v3 · Editorial UI Redesign
+
+- Date: 2026-04-06
+- Context: rebuilds the app into a warmer editorial-style experience with a poster-like hero, clearer workspace layout, and more visually intentional results presentation
+- Reference: implementation commit [`3996dad`](https://github.com/teohsinyee/self-reflection-survey/commit/3996dad)
+
+![v3 editorial redesign overview](screenshots/v3-editorial-redesign/overview.png)
+![v3 editorial redesign story view](screenshots/v3-editorial-redesign/story.png)
+
 ## Maintenance Notes
 
 - Create a new screenshot folder under `docs/screenshots/` for each notable UI version

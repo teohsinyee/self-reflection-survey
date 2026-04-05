@@ -2,11 +2,11 @@
 
 An interactive, single-page web app for self-assessment using three validated psychological scales.
 
-**Live demo:** `https://teohsinyee.github.io/self-reflection-survey/`
+**Live demo:** [teohsinyee.github.io/self-reflection-survey](https://teohsinyee.github.io/self-reflection-survey/)
 
 ## Latest UI Snapshot
 
-![Current survey UI with completed results guidance](docs/screenshots/v2-actionable-results/results-guidance.png)
+![Current editorial redesign of the survey UI](docs/screenshots/v3-editorial-redesign/overview.png)
 
 This image shows the latest UI captured in the repository. If you are viewing an open PR branch, the GitHub Pages demo on `main` may still be one version behind until that PR is merged.
 
@@ -31,18 +31,19 @@ See the [Version Gallery](docs/version-gallery.md) for archived screenshots of e
 - Exportable text summary for personal records or reflection
 - One-click reset to start over
 - Responsive, works on mobile and desktop
+- Editorial-style visual redesign with a stronger landing, workspace, and results presentation
 
 ## How to deploy on GitHub Pages
 
 1. Create a new GitHub repository (public)
-2. Upload `index.html` to the root of the repo
+2. Push the project files to the repo root, including `index.html`, `styles.css`, and the `docs/` assets used by the README
 3. Go to **Settings → Pages**
 4. Under **Source**, select `main` branch and `/ (root)`
 5. Click **Save** — your site will be live at `https://<username>.github.io/<repo-name>/`
 
 ## Local preview
 
-Just open `index.html` directly in any browser — no build step or server needed.
+Just open `index.html` directly in any browser — no build step or server needed. Keep `styles.css` in the same folder so the visual design loads correctly.
 
 ## Privacy
 
