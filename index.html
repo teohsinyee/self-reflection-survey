@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>身心健康评估 · Wellbeing Survey</title>
+<title>自我整理问卷</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0;9..144,500..700,50&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F7F5F0;
@@ -437,135 +439,247 @@
   footer a { color: var(--text-2); text-decoration: none; }
   footer a:hover { color: var(--text); }
 </style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
+<header class="site-header">
   <div class="header-inner">
-    <div class="site-title">Wellbeing <span>Survey</span></div>
-    <div class="progress-pill" id="progress-pill">0 / 26 已填</div>
+    <a class="site-title" href="#top"><span id="site-title-main">自我整理</span> <span id="site-title-accent">问卷</span></a>
+    <div class="header-meta">
+      <div class="lang-toggle" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn" id="lang-zh" data-lang="zh">中文</button>
+        <button type="button" class="lang-btn" id="lang-en" data-lang="en">English</button>
+      </div>
+      <a class="header-link" id="link-version-gallery" href="https://github.com/teohsinyee/self-reflection-survey/blob/main/docs/version-gallery.md" target="_blank" rel="noreferrer">版本图库</a>
+      <div class="progress-pill" id="progress-pill">0 / 32 已填</div>
+    </div>
   </div>
 </header>
 
-<main>
-  <div class="hero">
-    <h1>身心健康<br><em>自我评估</em></h1>
-    <p>包含三份经验证量表，评估你的意义感、倦怠程度与生命意义。所有数据仅在浏览器内处理，不会上传任何服务器。</p>
-  </div>
+<main id="top">
+  <section class="hero">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <div class="hero-kicker" id="hero-kicker">私密自我整理工具</div>
+        <h1><span id="hero-title-main">先看见信号，</span><em id="hero-title-accent">再整理下一步。</em></h1>
+        <p id="hero-copy">参考 3 份已发表量表的题目与评分逻辑，把感受整理成更清楚的分数、导读与下一步建议。所有数据都只留在你的浏览器里，不会上传到任何地方。</p>
+        <div class="hero-actions">
+          <a class="hero-btn hero-btn-primary" id="hero-primary-btn" href="#survey-start">开始填写</a>
+          <a class="hero-btn hero-btn-secondary" id="hero-secondary-btn" href="https://github.com/teohsinyee/self-reflection-survey" target="_blank" rel="noreferrer">查看 GitHub</a>
+        </div>
+        <div class="hero-caption" id="hero-caption">Ikigai-9 · CBI · MLQ · 浏览器自动保存 · 可导出摘要</div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-ribbon">
+          <span id="hero-ribbon-1">信号</span>
+          <span id="hero-ribbon-2">压力</span>
+          <span id="hero-ribbon-3">下一步</span>
+        </div>
+        <div class="hero-visual-title" id="hero-visual-title">32 个问题。一次更清楚的整理。</div>
+        <div class="hero-visual-copy" id="hero-visual-copy">先读懂你现在的信号，再把它们转成关注重点、行动建议与反思问题。</div>
+        <div class="hero-meter-stack">
+          <div class="hero-meter hero-meter-coral"><span id="hero-meter-1-label">意义与方向</span><strong id="hero-meter-1-value">结果导读</strong></div>
+          <div class="hero-meter hero-meter-violet"><span id="hero-meter-2-label">消耗信号</span><strong id="hero-meter-2-value">个人 + 工作负荷</strong></div>
+          <div class="hero-meter hero-meter-gold"><span id="hero-meter-3-label">行动层</span><strong id="hero-meter-3-value">3 个下一步 + 提问</strong></div>
+        </div>
+        <div class="hero-quote" id="hero-quote">默认私密。不需登入。不需后端。只是帮你更清楚地看见自己现在的位置。</div>
+      </div>
+    </div>
+  </section>
 
-  <!-- IKIGAI -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-badge badge-green">Ikigai-9</span>
-      <span class="section-title">意义感</span>
+  <section class="purpose">
+    <div class="purpose-shell">
+      <div class="purpose-intro">
+        <div class="purpose-kicker" id="purpose-kicker">为什么做这份整理</div>
+        <h2 class="purpose-title" id="purpose-title">不是为了贴标签，而是为了把感受整理成可行动的线索。</h2>
+        <p class="purpose-copy" id="purpose-copy">做完之后，你可以更快看见自己现在主要卡在哪里，也更容易判断这周该先恢复、先减压，还是先整理方向。</p>
+      </div>
+      <div class="purpose-grid">
+        <article class="purpose-item">
+          <div class="purpose-item-title" id="purpose-item-1-title">把模糊感受变成较清楚的信号</div>
+          <div class="purpose-item-body" id="purpose-item-1-body">分开看意义感、个人消耗与工作消耗，而不是只剩一句“最近状态不太对”。</div>
+        </article>
+        <article class="purpose-item">
+          <div class="purpose-item-title" id="purpose-item-2-title">区分现在更需要恢复，还是更需要整理方向</div>
+          <div class="purpose-item-body" id="purpose-item-2-body">有些时候问题不是缺少动力，而是已经太耗；有些时候则是并不太累，但方向不够清楚。</div>
+        </article>
+        <article class="purpose-item">
+          <div class="purpose-item-title" id="purpose-item-3-title">把结果转成一个可执行的下一步</div>
+          <div class="purpose-item-body" id="purpose-item-3-body">结果不会只停在分数，而是帮助你决定这周先保护什么、先减少什么、或先试什么。</div>
+        </article>
+      </div>
     </div>
-    <p class="section-hint">每题 1–5 分（1 = 完全没有，5 = 一直都是）</p>
-    <div id="ikigai-qs"></div>
-  </div>
+  </section>
 
-  <!-- CBI -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-badge badge-purple">CBI</span>
-      <span class="section-title">Copenhagen 倦怠量表</span>
-    </div>
-    <p class="section-hint">Never = 0 &nbsp;·&nbsp; Seldom = 25 &nbsp;·&nbsp; Sometimes = 50 &nbsp;·&nbsp; Often = 75 &nbsp;·&nbsp; Always = 100</p>
-    <div class="subsection-label">Part 1 · 个人倦怠</div>
-    <div id="cbi1-qs"></div>
-    <div class="subsection-label">Part 2 · 工作倦怠</div>
-    <div id="cbi2-qs"></div>
-  </div>
+  <section class="workspace" id="survey-start">
+    <div class="workspace-shell">
+      <div class="workspace-main">
+        <section class="section section-green">
+          <div class="section-head">
+            <span class="section-badge badge-green">Ikigai-9</span>
+            <h2 class="section-title" id="section-ikigai-title">意义感</h2>
+          </div>
+          <p class="section-hint" id="section-ikigai-hint">每题 1–5 分（1 = 完全没有，5 = 一直都是）</p>
+          <div id="ikigai-qs"></div>
+        </section>
 
-  <!-- MLQ -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-badge badge-amber">MLQ</span>
-      <span class="section-title">生命意义问卷</span>
-    </div>
-    <p class="section-hint">每题 1–7 分（1 = 完全不符合，7 = 完全符合）</p>
-    <div id="mlq-qs"></div>
-  </div>
+        <section class="section section-purple">
+          <div class="section-head">
+            <span class="section-badge badge-purple">CBI</span>
+            <h2 class="section-title" id="section-cbi-title">Copenhagen 倦怠量表</h2>
+          </div>
+          <p class="section-hint" id="section-cbi-hint">从不 = 0 &nbsp;·&nbsp; 很少 = 25 &nbsp;·&nbsp; 有时 = 50 &nbsp;·&nbsp; 经常 = 75 &nbsp;·&nbsp; 总是 = 100</p>
+          <div class="subsection-label" id="section-cbi-part1">第一部分 · 个人倦怠</div>
+          <div id="cbi1-qs"></div>
+          <div class="subsection-label" id="section-cbi-part2">第二部分 · 工作倦怠</div>
+          <div id="cbi2-qs"></div>
+        </section>
 
-  <!-- Results -->
-  <div class="results-wrap">
-    <div class="results-card">
-      <div class="results-top">
-        <div>
-          <div class="results-label">计分结果（实时更新）</div>
-          <div class="results-note" id="save-note">自动保存在此浏览器</div>
-        </div>
-        <div class="results-actions">
-          <button type="button" class="action-btn" id="export-btn" disabled>导出摘要</button>
-          <button type="button" class="action-btn" id="reset-btn" disabled>重新开始</button>
-        </div>
+        <section class="section section-amber">
+          <div class="section-head">
+            <span class="section-badge badge-amber">MLQ</span>
+            <h2 class="section-title" id="section-mlq-title">生命意义问卷</h2>
+          </div>
+          <p class="section-hint" id="section-mlq-hint">每题 1–7 分（1 = 完全不符合，7 = 完全符合）</p>
+          <div id="mlq-qs"></div>
+        </section>
       </div>
-      <div class="scores-row">
-        <div class="score-tile">
-          <div class="score-tile-label">Ikigai-9<br>意义感</div>
-          <div class="score-tile-val val-green" id="r-iki">—</div>
-          <div class="score-tile-max">满分 45</div>
-          <div class="score-bar"><div class="score-bar-fill fill-green" id="b-iki" style="width:0"></div></div>
+
+      <aside class="workspace-aside">
+        <div class="aside-sticky">
+          <div class="aside-block">
+            <div class="aside-label" id="aside-label">结果侧栏</div>
+            <h2 class="aside-title" id="aside-title">先在这里看分数，完整导读会在最后一题下方展开。</h2>
+            <p class="aside-copy" id="aside-copy">这份问卷不是为了告诉你“有没有问题”，而是帮助你判断接下来该先处理什么。</p>
+          </div>
+
+          <div class="results-wrap">
+            <div class="results-card">
+              <div class="results-top">
+                <div>
+                  <div class="results-label" id="results-label">即时结果</div>
+                  <div class="results-note" id="save-note">自动保存在此浏览器</div>
+                </div>
+                <div class="results-actions">
+                  <button type="button" class="action-btn" id="export-btn" disabled>导出摘要</button>
+                  <button type="button" class="action-btn" id="reset-btn" disabled>重新开始</button>
+                </div>
+              </div>
+              <div class="scores-row">
+                <div class="score-tile">
+                  <div class="score-tile-label">Ikigai-9<br>意义感</div>
+                  <div class="score-tile-val val-green" id="r-iki">—</div>
+                  <div class="score-tile-max">满分 45</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-green" id="b-iki" style="width:0"></div></div>
+                </div>
+                <div class="score-tile">
+                  <div class="score-tile-label">CBI<br>个人倦怠</div>
+                  <div class="score-tile-val val-purple" id="r-c1">—</div>
+                  <div class="score-tile-max">0–100</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c1" style="width:0"></div></div>
+                </div>
+                <div class="score-tile">
+                  <div class="score-tile-label">CBI<br>工作倦怠</div>
+                  <div class="score-tile-val val-purple" id="r-c2">—</div>
+                  <div class="score-tile-max">0–100</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c2" style="width:0"></div></div>
+                </div>
+                <div class="score-tile">
+                  <div class="score-tile-label">MLQ<br>意义相关感受</div>
+                  <div class="score-tile-val val-amber" id="r-mlq">—</div>
+                  <div class="score-tile-max">满分 70</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-amber" id="b-mlq" style="width:0"></div></div>
+                </div>
+              </div>
+              <div class="guide-rail" id="guide-rail">
+                <div class="guide-rail-kicker" id="guide-rail-kicker">完成后先看到这句</div>
+                <div class="guide-rail-title" id="guide-rail-title">做完最后一题后，这里会先出现一句结果摘要。</div>
+                <div class="guide-rail-copy" id="guide-rail-summary">完整建议会直接出现在问卷底部，你不需要再回头找结果。</div>
+                <a class="guide-rail-link" id="guide-rail-link" href="#story-panel" hidden>跳到完整结果</a>
+              </div>
+              <div class="interp" id="interp-panel">
+                <div class="interp-grid" id="interp-grid"></div>
+              </div>
+              <div class="results-footnote" id="results-footnote">带有 * 的分数代表该量表尚未完成，结果仍会继续变化。</div>
+            </div>
+          </div>
         </div>
-        <div class="score-tile">
-          <div class="score-tile-label">CBI<br>个人倦怠</div>
-          <div class="score-tile-val val-purple" id="r-c1">—</div>
-          <div class="score-tile-max">0–100</div>
-          <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c1" style="width:0"></div></div>
-        </div>
-        <div class="score-tile">
-          <div class="score-tile-label">CBI<br>工作倦怠</div>
-          <div class="score-tile-val val-purple" id="r-c2">—</div>
-          <div class="score-tile-max">0–100</div>
-          <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c2" style="width:0"></div></div>
-        </div>
-        <div class="score-tile">
-          <div class="score-tile-label">MLQ<br>生命意义</div>
-          <div class="score-tile-val val-amber" id="r-mlq">—</div>
-          <div class="score-tile-max">满分 70</div>
-          <div class="score-bar"><div class="score-bar-fill fill-amber" id="b-mlq" style="width:0"></div></div>
-        </div>
-      </div>
-      <div class="interp" id="interp-panel">
-        <div class="interp-grid" id="interp-grid"></div>
-      </div>
-      <div class="results-footnote">带有 * 的分数代表该量表尚未完成，结果仍会继续变化。</div>
+      </aside>
     </div>
-  </div>
-  <div class="story" id="story-panel">
-    <div class="story-card">
-      <div class="story-kicker">完成后怎么用这些结果</div>
-      <div class="story-title" id="story-title"></div>
-      <div class="story-summary" id="story-summary"></div>
-      <div class="story-focus">
-        <div class="story-subtitle">建议先关注</div>
-        <div class="story-tags" id="story-focus"></div>
-      </div>
-      <div class="story-grid">
-        <div class="story-col">
-          <div class="story-subtitle">本周可以试的 3 个动作</div>
-          <div class="story-list" id="story-actions"></div>
+  </section>
+
+  <section class="story story-bottom" id="story-panel" aria-live="polite">
+    <div class="story-shell">
+      <div class="story-card">
+        <div class="story-kicker" id="story-kicker">完整结果导读</div>
+        <h2 class="story-title" id="story-title"></h2>
+        <div class="story-summary" id="story-summary"></div>
+        <div class="story-focus">
+          <div class="story-subtitle" id="story-focus-label">建议先关注</div>
+          <div class="story-tags" id="story-focus"></div>
         </div>
-        <div class="story-col">
-          <div class="story-subtitle">给自己的反思问题</div>
-          <div class="story-list" id="story-prompts"></div>
+        <div class="story-grid">
+          <div class="story-col">
+            <div class="story-subtitle" id="story-actions-label">本周先做这 3 件事</div>
+            <div class="story-list" id="story-actions"></div>
+          </div>
+          <div class="story-col">
+            <div class="story-subtitle" id="story-prompts-label">给自己的反思问题</div>
+            <div class="story-list" id="story-prompts"></div>
+          </div>
         </div>
+        <div class="story-note" id="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
       </div>
-      <div class="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
     </div>
-  </div>
+  </section>
+
+  <section class="sources">
+    <div class="sources-shell">
+      <div class="sources-intro">
+        <div class="sources-kicker" id="sources-kicker">参考依据与出处</div>
+        <h2 class="sources-title" id="sources-title">这份工具参考了 3 份已发表研究量表，但当前网页更适合做个人整理。</h2>
+        <p class="sources-copy" id="sources-copy">这里的题目与评分框架参考 Ikigai-9、CBI 与 MLQ。它们能支持自我反思，但这个版本不等同于官方译本、研究版量表、医疗建议或临床诊断工具。</p>
+      </div>
+      <div class="sources-grid">
+        <article class="source-card">
+          <div class="source-name">Ikigai-9</div>
+          <div class="source-body" id="source-ikigai-body">参考 Imai 等人于 2012 年发表的 Ikigai-9。原量表用于测量与生きがい相关的积极感受、未来态度与自我存在意义。</div>
+          <a class="source-link" id="source-ikigai-link" href="https://www.jsph.jp/docs/magazine/2012/07/59-7_433.pdf" target="_blank" rel="noreferrer">查看原始论文</a>
+        </article>
+        <article class="source-card">
+          <div class="source-name">Copenhagen Burnout Inventory</div>
+          <div class="source-body" id="source-cbi-body">参考 Kristensen 等人于 2005 年发表的 Copenhagen Burnout Inventory。原量表区分个人倦怠、工作倦怠与人际相关倦怠。</div>
+          <a class="source-link" id="source-cbi-link" href="https://doi.org/10.1080/02678370500297720" target="_blank" rel="noreferrer">查看原始论文</a>
+        </article>
+        <article class="source-card">
+          <div class="source-name">Meaning in Life Questionnaire</div>
+          <div class="source-body" id="source-mlq-body">参考 Steger 等人提出的 Meaning in Life Questionnaire。原量表分成“意义拥有感”与“意义寻找”两个维度。</div>
+          <a class="source-link" id="source-mlq-link" href="https://ppc.sas.upenn.edu/resources/questionnaires-researchers/meaning-life-questionnaire" target="_blank" rel="noreferrer">查看量表说明</a>
+        </article>
+      </div>
+      <div class="sources-note" id="sources-note">如果要用于正式研究、学校或组织评估，或临床情境，请改用原始量表、官方授权版本与经过验证的在地语言版本。</div>
+    </div>
+  </section>
 </main>
 
 <footer>
-  <p>Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire</p>
-  <p style="margin-top:6px;">数据仅在本地处理，不会储存或传送 &nbsp;·&nbsp; Data stays in your browser</p>
+  <div class="site-footer">
+    <p id="footer-line-1">自我整理问卷 · Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire</p>
+    <p id="footer-line-2" style="margin-top:6px;">所有数据只留在你的浏览器中，不会上传或储存到其他地方。</p>
+  </div>
 </footer>
 
 <script>
 var TOTAL = 0;
 var STORAGE_KEY = 'self-reflection-survey-answers-v1';
+var LANGUAGE_KEY = 'self-reflection-survey-language-v1';
 var ans = {};
 var storageEnabled = true;
 var saveNoteTimer = null;
+var hasMounted = false;
+var previousAllDone = false;
+var currentLang = 'zh';
 
 var ikigaiQs = [
   {en:"I lead a life that is full and satisfying", zh:"我过着充实且满足的生活"},
@@ -611,7 +725,199 @@ var mlqQs = [
   {en:"I am searching for meaning in my life.", zh:"我在寻找生命的意义"}
 ];
 
-var cbiOpts = [["Never",0],["Seldom",25],["Sometimes",50],["Often",75],["Always",100]];
+var cbiOptValues = [0, 25, 50, 75, 100];
+var uiCopy = {
+  zh: {
+    htmlTitle: '自我整理问卷',
+    brandMain: '自我整理',
+    brandAccent: '问卷',
+    versionGallery: '版本图库',
+    progressSuffix: '已填',
+    heroKicker: '私密自我整理工具',
+    heroTitleMain: '先看见信号，',
+    heroTitleAccent: '再整理下一步。',
+    heroCopy: '参考 3 份已发表量表的题目与评分逻辑，把感受整理成更清楚的分数、导读与下一步建议。所有数据都只留在你的浏览器里，不会上传到任何地方。',
+    heroPrimary: '开始填写',
+    heroSecondary: '查看 GitHub',
+    heroCaption: 'Ikigai-9 · CBI · MLQ · 浏览器自动保存 · 可导出摘要',
+    heroRibbon1: '信号',
+    heroRibbon2: '压力',
+    heroRibbon3: '下一步',
+    heroVisualTitle: '32 个问题。一次更清楚的整理。',
+    heroVisualCopy: '先读懂你现在的信号，再把它们转成关注重点、行动建议与反思问题。',
+    heroMeter1Label: '意义与方向',
+    heroMeter1Value: '结果导读',
+    heroMeter2Label: '消耗信号',
+    heroMeter2Value: '个人 + 工作负荷',
+    heroMeter3Label: '行动层',
+    heroMeter3Value: '3 个下一步 + 提问',
+    heroQuote: '默认私密。不需登入。不需后端。只是帮你更清楚地看见自己现在的位置。',
+    purposeKicker: '为什么做这份整理',
+    purposeTitle: '不是为了贴标签，而是为了把感受整理成可行动的线索。',
+    purposeCopy: '做完之后，你可以更快看见自己现在主要卡在哪里，也更容易判断这周该先恢复、先减压，还是先整理方向。',
+    purposeItem1Title: '把模糊感受变成较清楚的信号',
+    purposeItem1Body: '分开看意义感、个人消耗与工作消耗，而不是只剩一句“最近状态不太对”。',
+    purposeItem2Title: '区分现在更需要恢复，还是更需要整理方向',
+    purposeItem2Body: '有些时候问题不是缺少动力，而是已经太耗；有些时候则是并不太累，但方向不够清楚。',
+    purposeItem3Title: '把结果转成一个可执行的下一步',
+    purposeItem3Body: '结果不会只停在分数，而是帮助你决定这周先保护什么、先减少什么、或先试什么。',
+    ikigaiTitle: '意义感',
+    ikigaiHint: '每题 1–5 分（1 = 完全没有，5 = 一直都是）',
+    cbiTitle: 'Copenhagen 倦怠量表',
+    cbiHint: '从不 = 0 · 很少 = 25 · 有时 = 50 · 经常 = 75 · 总是 = 100',
+    cbiPart1: '第一部分 · 个人倦怠',
+    cbiPart2: '第二部分 · 工作倦怠',
+    mlqTitle: '生命意义问卷',
+    mlqHint: '每题 1–7 分（1 = 完全不符合，7 = 完全符合）',
+    asideLabel: '结果侧栏',
+    asideTitle: '先在这里看分数，完整导读会在最后一题下方展开。',
+    asideCopy: '这份问卷不是为了告诉你“有没有问题”，而是帮助你判断接下来该先处理什么。',
+    resultsLabel: '即时结果',
+    exportLabel: '导出摘要',
+    resetLabel: '重新开始',
+    tileIkigai: 'Ikigai-9<br>意义感',
+    tilePersonal: 'CBI<br>个人倦怠',
+    tileWork: 'CBI<br>工作倦怠',
+    tileMlq: 'MLQ<br>意义相关感受',
+    fullScoreLabel: '满分',
+    guideRailKicker: '完成后先看到这句',
+    guideRailDefaultTitle: '做完最后一题后，这里会先出现一句结果摘要。',
+    guideRailDefaultSummary: '完整建议会直接出现在问卷底部，你不需要再回头找结果。',
+    guideRailJump: '跳到完整结果',
+    resultsFootnote: '带有 * 的分数代表该量表尚未完成，结果仍会继续变化。',
+    storyKicker: '完整结果导读',
+    storyFocusLabel: '建议先关注',
+    storyActionsLabel: '本周先做这 3 件事',
+    storyPromptsLabel: '给自己的反思问题',
+    storyNote: '这不是诊断，而是把分数转换成更具体的下一步。',
+    sourcesKicker: '参考依据与出处',
+    sourcesTitle: '这份工具参考了 3 份已发表研究量表，但当前网页更适合做个人整理。',
+    sourcesCopy: '这里的题目与评分框架参考 Ikigai-9、CBI 与 MLQ。它们能支持自我反思，但这个版本不等同于官方译本、研究版量表、医疗建议或临床诊断工具。',
+    sourceIkigaiBody: '参考 Imai 等人于 2012 年发表的 Ikigai-9。原量表用于测量与生きがい相关的积极感受、未来态度与自我存在意义。',
+    sourceCbiBody: '参考 Kristensen 等人于 2005 年发表的 Copenhagen Burnout Inventory。原量表区分个人倦怠、工作倦怠与人际相关倦怠。',
+    sourceMlqBody: '参考 Steger 等人提出的 Meaning in Life Questionnaire。原量表分成“意义拥有感”与“意义寻找”两个维度。',
+    sourcePaper: '查看原始论文',
+    sourceGuide: '查看量表说明',
+    sourcesNote: '如果要用于正式研究、学校或组织评估，或临床情境，请改用原始量表、官方授权版本与经过验证的在地语言版本。',
+    footer1: '自我整理问卷 · Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire',
+    footer2: '所有数据只留在你的浏览器中，不会上传或储存到其他地方。',
+    saveDefault: '自动保存在此浏览器',
+    saveUnavailable: '浏览器暂存不可用',
+    saveRestored: '已恢复上次填写进度',
+    saveCleared: '已清除本机暂存',
+    resetConfirm: '确定要清除所有答案并重新开始吗？',
+    summaryTitle: '自我整理问卷摘要',
+    exportedAt: '导出时间',
+    answeredCount: '完成题数',
+    status: '状态',
+    completed: '已完成全部题目',
+    incomplete: '尚未完成全部题目',
+    unanswered: '尚未作答',
+    interpretation: '结果说明',
+    guidedSummary: '行动导读',
+    focusLabel: '建议先关注',
+    actionsLabel: '建议动作',
+    promptsLabel: '反思问题',
+    cbiOptions: ['从不', '很少', '有时', '经常', '总是'],
+    scoreAriaPrefix: '分数',
+    promptItemTitle: '反思问题'
+  },
+  en: {
+    htmlTitle: 'Self Reflection Survey',
+    brandMain: 'Self Reflection',
+    brandAccent: 'Survey',
+    versionGallery: 'Version Gallery',
+    progressSuffix: 'filled',
+    heroKicker: 'Private self reflection tool',
+    heroTitleMain: 'Read the signal,',
+    heroTitleAccent: 'then shape your next step.',
+    heroCopy: 'Use prompts and score logic adapted from three published questionnaires to turn fuzzy feelings into clearer scores, guidance, and next steps. All data stays in your browser and is never uploaded anywhere.',
+    heroPrimary: 'Start reflection',
+    heroSecondary: 'View on GitHub',
+    heroCaption: 'Ikigai-9 · CBI · MLQ · browser autosave · exportable summary',
+    heroRibbon1: 'Signals',
+    heroRibbon2: 'Strain',
+    heroRibbon3: 'Next step',
+    heroVisualTitle: '32 prompts. One clearer read.',
+    heroVisualCopy: 'Read your current signals, then turn them into focus areas, actions, and reflection prompts.',
+    heroMeter1Label: 'Meaning + direction',
+    heroMeter1Value: 'guided summary',
+    heroMeter2Label: 'Strain signal',
+    heroMeter2Value: 'personal + work load',
+    heroMeter3Label: 'Action layer',
+    heroMeter3Value: '3 next steps + prompts',
+    heroQuote: 'Private by default. No login. No backend. Just a clearer read on where you are right now.',
+    purposeKicker: 'Why use this reflection',
+    purposeTitle: 'This is not for labeling yourself. It is for turning feelings into something you can act on.',
+    purposeCopy: 'When you finish, you should be able to see what is actually going on for you right now and decide whether recovery, load reduction, or direction needs attention first this week.',
+    purposeItem1Title: 'Turn vague feelings into clearer signals',
+    purposeItem1Body: 'Separate meaning, personal strain, and work strain instead of being stuck with a blurry sense that “something feels off.”',
+    purposeItem2Title: 'See whether you need recovery or clearer direction',
+    purposeItem2Body: 'Sometimes the issue is not motivation but overload. Other times you are not deeply exhausted, but your direction still feels unclear.',
+    purposeItem3Title: 'Translate results into one concrete next step',
+    purposeItem3Body: 'The result should not stop at a score. It should help you decide what to protect, reduce, or try next this week.',
+    ikigaiTitle: 'Meaning',
+    ikigaiHint: 'Rate each item from 1 to 5 (1 = not at all true, 5 = very true)',
+    cbiTitle: 'Copenhagen Burnout Inventory',
+    cbiHint: 'Never = 0 · Seldom = 25 · Sometimes = 50 · Often = 75 · Always = 100',
+    cbiPart1: 'Part 1 · Personal burnout',
+    cbiPart2: 'Part 2 · Work burnout',
+    mlqTitle: 'Meaning in Life Questionnaire',
+    mlqHint: 'Rate each item from 1 to 7 (1 = absolutely untrue, 7 = absolutely true)',
+    asideLabel: 'Result rail',
+    asideTitle: 'Check the scores here first. The full guide opens below the last question.',
+    asideCopy: 'This reflection is not here to tell you whether something is “wrong.” It is here to help you see what to address first.',
+    resultsLabel: 'Live results',
+    exportLabel: 'Export summary',
+    resetLabel: 'Start over',
+    tileIkigai: 'Ikigai-9<br>Meaning',
+    tilePersonal: 'CBI<br>Personal burnout',
+    tileWork: 'CBI<br>Work burnout',
+    tileMlq: 'MLQ<br>Meaning signal',
+    fullScoreLabel: 'Max',
+    guideRailKicker: 'What appears first',
+    guideRailDefaultTitle: 'When you finish the last item, a short result summary will appear here first.',
+    guideRailDefaultSummary: 'The full guidance appears at the bottom of the survey, so you do not need to hunt for it.',
+    guideRailJump: 'Jump to full result',
+    resultsFootnote: 'A score with * means that scale is not finished yet, so the result can still change.',
+    storyKicker: 'Full result guide',
+    storyFocusLabel: 'Focus first on',
+    storyActionsLabel: '3 actions to try this week',
+    storyPromptsLabel: 'Reflection prompts',
+    storyNote: 'This is not a diagnosis. It is a way to turn scores into a more concrete next step.',
+    sourcesKicker: 'References and source notes',
+    sourcesTitle: 'This tool is based on 3 published research instruments, but the current web version is best treated as a personal reflection tool.',
+    sourcesCopy: 'The prompts and scoring logic here are adapted from Ikigai-9, the CBI, and the MLQ. They can support self-reflection, but this version is not an official translation, a formal research instrument, medical advice, or a clinical diagnostic tool.',
+    sourceIkigaiBody: 'Based on Ikigai-9, published by Imai and colleagues in 2012 to measure positive feelings, future orientation, and a sense of personal meaning related to ikigai.',
+    sourceCbiBody: 'Based on the Copenhagen Burnout Inventory, published by Kristensen and colleagues in 2005 to distinguish personal burnout, work-related burnout, and interpersonal or client-related burnout.',
+    sourceMlqBody: 'Based on the Meaning in Life Questionnaire, developed by Steger and colleagues to measure both the presence of meaning and the search for meaning.',
+    sourcePaper: 'Open source paper',
+    sourceGuide: 'Open questionnaire info',
+    sourcesNote: 'If you plan to use these in formal research, organizational assessment, or clinical settings, switch to the original instrument, an authorized version, and a validated local-language translation.',
+    footer1: 'Self Reflection Survey · Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire',
+    footer2: 'All data stays in your browser and is not uploaded or stored anywhere else.',
+    saveDefault: 'Autosaved in this browser',
+    saveUnavailable: 'Browser storage unavailable',
+    saveRestored: 'Previous progress restored',
+    saveCleared: 'Local progress cleared',
+    resetConfirm: 'Clear all answers and start over?',
+    summaryTitle: 'Self Reflection Survey Summary',
+    exportedAt: 'Exported at',
+    answeredCount: 'Answered',
+    status: 'Status',
+    completed: 'All questions completed',
+    incomplete: 'Survey not completed yet',
+    unanswered: 'Not answered yet',
+    interpretation: 'Interpretation',
+    guidedSummary: 'Guided summary',
+    focusLabel: 'Focus first on',
+    actionsLabel: 'Suggested actions',
+    promptsLabel: 'Reflection prompts',
+    cbiOptions: ['Never', 'Seldom', 'Sometimes', 'Often', 'Always'],
+    scoreAriaPrefix: 'Score',
+    promptItemTitle: 'Reflection prompt'
+  }
+};
 TOTAL = ikigaiQs.length + cbi1Qs.length + cbi2Qs.length + mlqQs.length;
 var validKeys = buildValidKeys();
 
@@ -623,6 +929,57 @@ function buildValidKeys() {
   for (i = 1; i <= 7; i++) { keys['c2_' + i] = true; }
   for (i = 1; i <= 10; i++) { keys['m' + i] = true; }
   return keys;
+}
+
+function text(zh, en) {
+  return currentLang === 'zh' ? zh : en;
+}
+
+function getCopy() {
+  return uiCopy[currentLang] || uiCopy.zh;
+}
+
+function getCbiOptions() {
+  return getCopy().cbiOptions.map(function(label, idx) {
+    return [label, cbiOptValues[idx]];
+  });
+}
+
+function getLanguageFromQuery() {
+  try {
+    var url = new URL(window.location.href);
+    var lang = url.searchParams.get('lang');
+    if (lang === 'zh' || lang === 'en') { return lang; }
+  } catch (err) {}
+  return null;
+}
+
+function loadLanguagePreference() {
+  var requested = getLanguageFromQuery();
+  if (requested) { return requested; }
+  try {
+    var saved = window.localStorage.getItem(LANGUAGE_KEY);
+    if (saved === 'en' || saved === 'zh') { return saved; }
+  } catch (err) {}
+  return 'zh';
+}
+
+function persistLanguagePreference() {
+  try {
+    window.localStorage.setItem(LANGUAGE_KEY, currentLang);
+  } catch (err) {}
+}
+
+function syncLanguageQuery() {
+  try {
+    var url = new URL(window.location.href);
+    if (currentLang === 'zh') {
+      url.searchParams.delete('lang');
+    } else {
+      url.searchParams.set('lang', currentLang);
+    }
+    window.history.replaceState({}, '', url.toString());
+  } catch (err) {}
 }
 
 function isStorageAvailable() {
@@ -637,7 +994,8 @@ function isStorageAvailable() {
 }
 
 function getDefaultSaveNote() {
-  return storageEnabled ? '自动保存在此浏览器' : '浏览器暂存不可用';
+  var copy = getCopy();
+  return storageEnabled ? copy.saveDefault : copy.saveUnavailable;
 }
 
 function setSaveNote(message, temporary) {
@@ -658,7 +1016,7 @@ function setSaveNote(message, temporary) {
 
 function isValidStoredAnswer(key, value) {
   if (key.indexOf('c1_') === 0 || key.indexOf('c2_') === 0) {
-    return cbiOpts.some(function(opt) { return opt[1] === value; });
+    return cbiOptValues.indexOf(value) !== -1;
   }
   if (key.charAt(0) === 'i') {
     return value >= 1 && value <= 5;
@@ -731,20 +1089,17 @@ function buildScale(containerId, prefix, maxScore, activeClass, questions) {
 
     var textWrap = document.createElement('div');
     textWrap.className = 'q-text-wrap';
-    var en = document.createElement('div');
-    en.className = 'q-en';
-    en.textContent = q.en;
+    var mainText = document.createElement('div');
+    mainText.className = 'q-main';
+    mainText.textContent = currentLang === 'zh' ? q.zh : q.en;
+    mainText.setAttribute('lang', currentLang === 'zh' ? 'zh-Hans' : 'en');
     if (q.rev) {
       var tag = document.createElement('span');
       tag.className = 'rev-tag';
-      tag.textContent = '反向';
-      en.appendChild(tag);
+      tag.textContent = currentLang === 'zh' ? '反向' : 'Reversed';
+      mainText.appendChild(tag);
     }
-    var zh = document.createElement('div');
-    zh.className = 'q-zh';
-    zh.textContent = q.zh;
-    textWrap.appendChild(en);
-    textWrap.appendChild(zh);
+    textWrap.appendChild(mainText);
 
     top.appendChild(num);
     top.appendChild(textWrap);
@@ -759,7 +1114,7 @@ function buildScale(containerId, prefix, maxScore, activeClass, questions) {
         b.type = 'button';
         b.className = baseClass;
         b.textContent = val;
-        b.setAttribute('aria-label', 'Score ' + val);
+        b.setAttribute('aria-label', getCopy().scoreAriaPrefix + ' ' + val);
         b.setAttribute('aria-pressed', 'false');
         b.setAttribute('data-base-class', baseClass);
         b.setAttribute('data-value', val);
@@ -793,27 +1148,24 @@ function buildCBI(containerId, prefix, questions) {
     num.textContent = idx + 1;
     var textWrap = document.createElement('div');
     textWrap.className = 'q-text-wrap';
-    var en = document.createElement('div');
-    en.className = 'q-en';
-    en.textContent = q.en;
+    var mainText = document.createElement('div');
+    mainText.className = 'q-main';
+    mainText.textContent = currentLang === 'zh' ? q.zh : q.en;
+    mainText.setAttribute('lang', currentLang === 'zh' ? 'zh-Hans' : 'en');
     if (q.rev) {
       var tag = document.createElement('span');
       tag.className = 'rev-tag';
-      tag.textContent = '反向';
-      en.appendChild(tag);
+      tag.textContent = currentLang === 'zh' ? '反向' : 'Reversed';
+      mainText.appendChild(tag);
     }
-    var zh = document.createElement('div');
-    zh.className = 'q-zh';
-    zh.textContent = q.zh;
-    textWrap.appendChild(en);
-    textWrap.appendChild(zh);
+    textWrap.appendChild(mainText);
     top.appendChild(num);
     top.appendChild(textWrap);
     card.appendChild(top);
 
     var btns = document.createElement('div');
     btns.className = 'q-btns';
-    cbiOpts.forEach(function(opt) {
+    getCbiOptions().forEach(function(opt) {
       var b = document.createElement('button');
       var baseClass = 'q-btn cbi-btn';
       b.type = 'button';
@@ -840,19 +1192,19 @@ function buildCBI(containerId, prefix, questions) {
 function getInterp(type, val) {
   if (val === null || val === undefined) { return null; }
   if (type === 'ikigai') {
-    if (val >= 36) { return {level:'良好', cls:'level-positive', desc:'意义感充足，生活满足度较高'}; }
-    if (val >= 27) { return {level:'中等', cls:'level-neutral', desc:'中等意义感，仍有提升空间'}; }
-    return {level:'偏低', cls:'level-attention', desc:'意义感较低，建议留意内在需求与生活节奏'};
+    if (val >= 36) { return {level:text('良好', 'Strong'), cls:'level-positive', desc:text('意义感充足，生活满足度较高。', 'Meaning appears relatively strong and day-to-day life may feel more worthwhile.')}; }
+    if (val >= 27) { return {level:text('中等', 'Moderate'), cls:'level-neutral', desc:text('意义感处于中间区间，仍有整理与提升空间。', 'Meaning appears to be in the middle range, with room to clarify or strengthen it.')}; }
+    return {level:text('偏低', 'Lower'), cls:'level-attention', desc:text('意义感偏低，建议留意内在需求与生活节奏。', 'Meaning appears lower right now, so it may help to pay attention to your needs and daily rhythm.')};
   }
   if (type === 'cbi') {
-    if (val >= 50) { return {level:'高倦怠', cls:'level-attention', desc:'倦怠程度较高，建议优先安排休息与调整'}; }
-    if (val >= 25) { return {level:'中等', cls:'level-neutral', desc:'已有倦怠迹象，需注意自我照顾'}; }
-    return {level:'良好', cls:'level-positive', desc:'倦怠程度低，当前状态较佳'};
+    if (val >= 50) { return {level:text('高倦怠', 'Higher strain'), cls:'level-attention', desc:text('消耗感较高，建议优先安排休息、减量与调整。', 'Strain appears elevated, so rest, load reduction, and adjustment may need to come first.')}; }
+    if (val >= 25) { return {level:text('中等', 'Moderate'), cls:'level-neutral', desc:text('已经出现一些倦怠迹象，值得提早自我照顾。', 'Some strain is already showing up, so it is worth responding early with self-care and boundaries.')}; }
+    return {level:text('较稳', 'Lower strain'), cls:'level-positive', desc:text('目前倦怠信号较低，整体状态相对稳定。', 'Burnout-related strain appears relatively low at the moment and overall stability looks better.')};
   }
   if (type === 'mlq') {
-    if (val >= 48) { return {level:'较高', cls:'level-positive', desc:'与生命意义相关的感受较强，可能同时包含较高的意义感与较主动的探索'}; }
-    if (val >= 30) { return {level:'中等', cls:'level-neutral', desc:'对生命意义的体验与探索处于中间区间，适合结合下方导读一起看'}; }
-    return {level:'较低', cls:'level-attention', desc:'与生命意义相关的感受较弱，适合逐步探索重视的价值与目标'};
+    if (val >= 48) { return {level:text('较高', 'Higher'), cls:'level-positive', desc:text('与生命意义相关的感受较强，可能同时包含较高的意义感与较主动的探索。', 'Meaning-related scores are relatively strong and may reflect both clearer meaning and active exploration.')}; }
+    if (val >= 30) { return {level:text('中等', 'Moderate'), cls:'level-neutral', desc:text('对生命意义的体验与探索处于中间区间，适合结合下方导读一起看。', 'Meaning-related experience and exploration appear to be in the middle range, so the guided summary below matters more than the score alone.')}; }
+    return {level:text('较低', 'Lower'), cls:'level-attention', desc:text('与生命意义相关的感受较弱，适合逐步探索自己重视的价值与方向。', 'Meaning-related signals appear lower right now, so it may help to explore which values and directions matter most to you.')};
   }
   return null;
 }
@@ -914,10 +1266,10 @@ function getResultState() {
     mlqPresence: mlqSubs.presence.value,
     mlqSearch: mlqSubs.search.value,
     items: [
-      {name:'Ikigai-9 意义感', val:ikigai.value, type:'ikigai', scoreLabel:'总分', max:45, complete:ikigai.complete, textId:'r-iki', barId:'b-iki'},
-      {name:'CBI 个人倦怠', val:cbiPersonal.value, type:'cbi', scoreLabel:'均值', max:100, complete:cbiPersonal.complete, textId:'r-c1', barId:'b-c1'},
-      {name:'CBI 工作倦怠', val:cbiWork.value, type:'cbi', scoreLabel:'均值', max:100, complete:cbiWork.complete, textId:'r-c2', barId:'b-c2'},
-      {name:'MLQ 意义相关感受', val:mlq.value, type:'mlq', scoreLabel:'总分', max:70, complete:mlq.complete, textId:'r-mlq', barId:'b-mlq'}
+      {name:text('Ikigai-9 意义感', 'Ikigai-9 Meaning'), val:ikigai.value, type:'ikigai', scoreLabel:text('总分', 'Total'), max:45, complete:ikigai.complete, textId:'r-iki', barId:'b-iki'},
+      {name:text('CBI 个人倦怠', 'CBI Personal burnout'), val:cbiPersonal.value, type:'cbi', scoreLabel:text('均值', 'Average'), max:100, complete:cbiPersonal.complete, textId:'r-c1', barId:'b-c1'},
+      {name:text('CBI 工作倦怠', 'CBI Work burnout'), val:cbiWork.value, type:'cbi', scoreLabel:text('均值', 'Average'), max:100, complete:cbiWork.complete, textId:'r-c2', barId:'b-c2'},
+      {name:text('MLQ 意义相关感受', 'MLQ Meaning signal'), val:mlq.value, type:'mlq', scoreLabel:text('总分', 'Total'), max:70, complete:mlq.complete, textId:'r-mlq', barId:'b-mlq'}
     ]
   };
 }
@@ -962,117 +1314,117 @@ function getGuideData(state) {
   var summary = '';
 
   if (burnoutMax >= 50 && strongMeaning) {
-    title = '有方向，但能量正在透支';
-    summary = '你并不是缺少目标感，反而可能很在乎自己想做好的事。现在更关键的是保护精力与边界，不要让“有意义”变成必须一直撑住。';
+    title = text('有方向，但能量正在透支', 'You have direction, but your energy is being overdrawn');
+    summary = text('你并不是缺少目标感，反而可能很在乎自己想做好的事。现在更关键的是保护精力与边界，不要让“有意义”变成必须一直撑住。', 'The issue may not be a lack of purpose. You may care deeply about what you are trying to do well. The more urgent task now is protecting energy and boundaries so that meaning does not turn into endless endurance.');
   } else if (burnoutMax >= 50 && lowPresence && activeSearch) {
-    title = '先恢复状态，再给探索一点空间';
-    summary = '你可能一边疲惫，一边还在努力想清楚什么才是重要的。现在先把恢复放回前面，通常会比逼自己立刻得出答案更有效。';
+    title = text('先恢复状态，再给探索一点空间', 'Recover first, then make room for exploration');
+    summary = text('你可能一边疲惫，一边还在努力想清楚什么才是重要的。现在先把恢复放回前面，通常会比逼自己立刻得出答案更有效。', 'You may be both tired and still trying hard to figure out what matters. Putting recovery back in front usually helps more than forcing yourself to arrive at an answer immediately.');
   } else if (burnoutMax >= 50 && lowMeaning) {
-    title = '先恢复状态，再重新找回方向';
-    summary = '目前不只是累，也可能对很多事提不起意义感。这个阶段先把恢复、睡眠、节奏和支持系统排回前面，会比逼自己立刻想清楚更有帮助。';
+    title = text('先恢复状态，再重新找回方向', 'Recover first, then rebuild direction');
+    summary = text('目前不只是累，也可能对很多事提不起意义感。这个阶段先把恢复、睡眠、节奏和支持系统排回前面，会比逼自己立刻想清楚更有帮助。', 'This may be more than exhaustion. Meaning itself may feel muted right now. In this phase, putting recovery, sleep, rhythm, and support back in place is likely to help more than forcing clarity right away.');
   } else if (burnoutMax >= 50) {
-    title = '需要减压，也需要重新对齐重点';
-    summary = '结果显示你已经有明显倦怠。现在最有价值的不是再加努力，而是先减少消耗，再把有限精力留给真正重要的事。';
+    title = text('需要减压，也需要重新对齐重点', 'You need relief, and you also need to realign priorities');
+    summary = text('结果显示你已经有明显倦怠。现在最有价值的不是再加努力，而是先减少消耗，再把有限精力留给真正重要的事。', 'The scores suggest meaningful strain. The most useful move now is not trying harder, but reducing drain first and then reserving limited energy for what matters most.');
   } else if (burnoutMax >= 25 && strongMeaning) {
-    title = '方向还在，但要防止慢性消耗';
-    summary = '你仍有一定意义感，不过压力已经开始侵蚀恢复能力。这个阶段最值得做的是提早调整，而不是等到完全耗尽。';
+    title = text('方向还在，但要防止慢性消耗', 'Your direction is still there, but chronic drain is growing');
+    summary = text('你仍有一定意义感，不过压力已经开始侵蚀恢复能力。这个阶段最值得做的是提早调整，而不是等到完全耗尽。', 'Meaning is still present, but strain is starting to wear down your ability to recover. This is the moment for earlier adjustment rather than waiting until you are fully depleted.');
   } else if (burnoutMax >= 25 && lowPresence && activeSearch) {
-    title = '还在寻找方向，也要避免继续透支';
-    summary = '你可能还在摸索什么值得投入，而压力已经开始影响恢复感。先让生活节奏稳一点，探索才会更清楚。';
+    title = text('还在寻找方向，也要避免继续透支', 'You are still searching for direction, so avoid further overdraw');
+    summary = text('你可能还在摸索什么值得投入，而压力已经开始影响恢复感。先让生活节奏稳一点，探索才会更清楚。', 'You may still be exploring what deserves your investment, while strain is already affecting recovery. A steadier rhythm first will usually make the exploration clearer.');
   } else if (burnoutMax >= 25 && lowMeaning) {
-    title = '状态还能支撑，但内在感受需要被照顾';
-    summary = '你可能还在继续运转，但满足感和意义感并不高。此时需要的未必是更努力，而是更诚实地看见自己真正想保留什么。';
+    title = text('状态还能支撑，但内在感受需要被照顾', 'You may still be functioning, but your inner experience needs care');
+    summary = text('你可能还在继续运转，但满足感和意义感并不高。此时需要的未必是更努力，而是更诚实地看见自己真正想保留什么。', 'You may still be functioning, but satisfaction and meaning do not look especially high. What may help now is not more effort, but a more honest look at what you actually want to keep.');
   } else if (burnoutMax < 25 && strongMeaning) {
-    title = '基础状态稳定，可以把好状态变成节奏';
-    summary = '目前你的能量和意义感都相对稳。接下来重点不是大改，而是把这些有效做法变成可持续、可重复的日常节奏。';
+    title = text('基础状态稳定，可以把好状态变成节奏', 'Your foundation looks stable. Now make the good parts repeatable');
+    summary = text('目前你的能量和意义感都相对稳。接下来重点不是大改，而是把这些有效做法变成可持续、可重复的日常节奏。', 'Energy and meaning both look relatively stable. The next step is probably not a major change, but turning what already helps into a sustainable rhythm.');
   } else if (burnoutMax < 25 && lowPresence && activeSearch) {
-    title = '状态还可以，方向仍在探索中';
-    summary = '你的身体与工作状态未必是最急迫的问题，但你可能仍在摸索什么值得长期投入。现在适合用低压力的方式慢慢试，不必急着定论。';
+    title = text('状态还可以，方向仍在探索中', 'Your state looks okay, and direction is still in exploration');
+    summary = text('你的身体与工作状态未必是最急迫的问题，但你可能仍在摸索什么值得长期投入。现在适合用低压力的方式慢慢试，不必急着定论。', 'Your physical and work state may not be the most urgent issue, but you may still be exploring what deserves long-term investment. Low-pressure experiments are likely to help more than rushing to a fixed answer.');
   } else if (burnoutMax < 25 && lowMeaning) {
-    title = '身体状态还可以，但方向仍值得整理';
-    summary = '你并不一定很疲惫，但还没有建立稳定的目标感与满足感。适合用低压力、可持续的方式慢慢厘清自己重视的事。';
+    title = text('身体状态还可以，但方向仍值得整理', 'Your state may be okay, but your direction still deserves attention');
+    summary = text('你并不一定很疲惫，但还没有建立稳定的目标感与满足感。适合用低压力、可持续的方式慢慢厘清自己重视的事。', 'You may not be especially exhausted, but a stable sense of purpose and satisfaction is not fully in place yet. A low-pressure, sustainable process of clarifying what matters may fit best.');
   } else {
-    title = '你正处在调整中的中间地带';
-    summary = '结果没有显示极端风险，但也不是完全稳定。把这次测验当成一次校准：看看哪些部分在消耗你，哪些部分还在支持你。';
+    title = text('你正处在调整中的中间地带', 'You seem to be in an in-between adjustment phase');
+    summary = text('结果没有显示极端风险，但也不是完全稳定。把这次测验当成一次校准：看看哪些部分在消耗你，哪些部分还在支持你。', 'The scores do not point to an extreme risk state, but they do not look fully settled either. Treat this as a calibration point: what is draining you, and what is still supporting you?');
   }
 
   if (burnoutMax >= 50) {
-    pushUnique(focuses, '先降低整体消耗', 3);
+    pushUnique(focuses, text('先降低整体消耗', 'Reduce overall drain first'), 3);
   } else if (burnoutMax >= 25) {
-    pushUnique(focuses, '提早调整节奏', 3);
+    pushUnique(focuses, text('提早调整节奏', 'Adjust your rhythm early'), 3);
   } else {
-    pushUnique(focuses, '维持稳定节奏', 3);
+    pushUnique(focuses, text('维持稳定节奏', 'Maintain a stable rhythm'), 3);
   }
 
   if (workHeavier && cbiWork >= 25) {
-    pushUnique(focuses, '工作边界与负荷', 3);
+    pushUnique(focuses, text('工作边界与负荷', 'Work boundaries and load'), 3);
   } else if (personalHeavier && cbiPersonal >= 25) {
-    pushUnique(focuses, '恢复精力与睡眠', 3);
+    pushUnique(focuses, text('恢复精力与睡眠', 'Recovery, energy, and sleep'), 3);
   }
 
   if (ikigai < 27) {
-    pushUnique(focuses, '增加日常满足感', 3);
+    pushUnique(focuses, text('增加日常满足感', 'Increase everyday satisfaction'), 3);
   } else if (ikigai >= 36) {
-    pushUnique(focuses, '保留让你有活力的事', 3);
+    pushUnique(focuses, text('保留让你有活力的事', 'Protect what gives you energy'), 3);
   }
 
   if (lowPresence) {
-    pushUnique(focuses, '澄清价值与方向', 3);
+    pushUnique(focuses, text('澄清价值与方向', 'Clarify values and direction'), 3);
   } else if (mlqPresence >= 24) {
-    pushUnique(focuses, '让目标感保持可持续', 3);
+    pushUnique(focuses, text('让目标感保持可持续', 'Keep purpose sustainable'), 3);
   }
 
   if (activeSearch && !strongMeaning) {
-    pushUnique(focuses, '把探索变成可尝试的小实验', 3);
+    pushUnique(focuses, text('把探索变成可尝试的小实验', 'Turn exploration into a small experiment'), 3);
   }
 
   if (burnoutMax >= 50) {
-    pushAction(actions, '先删掉一件事', '本周找出一件可以延后、委派，或缩小范围的责任，先把总负荷降下来。');
-    pushPrompt(prompts, '最近最持续让我耗电的是什么？其中哪一部分其实可以减一点？');
+    pushAction(actions, text('先删掉一件事', 'Remove one thing first'), text('本周找出一件可以延后、委派，或缩小范围的责任，先把总负荷降下来。', 'Choose one responsibility you can delay, delegate, or shrink this week so the total load comes down first.'));
+    pushPrompt(prompts, text('最近最持续让我耗电的是什么？其中哪一部分其实可以减一点？', 'What has been draining me most consistently lately, and which part of it could actually be reduced a little?'));
   }
 
   if (workHeavier && cbiWork >= 25) {
-    pushAction(actions, '重设一个工作边界', '挑出一个最消耗你的任务、时段或讯息来源，决定一个更明确的边界动作。');
-    pushPrompt(prompts, '我现在最需要保护的工作边界是什么？如果不保护，会继续发生什么？');
+    pushAction(actions, text('重设一个工作边界', 'Reset one work boundary'), text('挑出一个最消耗你的任务、时段或讯息来源，决定一个更明确的边界动作。', 'Pick the task, time window, or message source that drains you most and choose one clearer boundary around it.'));
+    pushPrompt(prompts, text('我现在最需要保护的工作边界是什么？如果不保护，会继续发生什么？', 'What work boundary most needs protection right now, and what keeps happening if I do not protect it?'));
   }
 
   if (personalHeavier && cbiPersonal >= 25) {
-    pushAction(actions, '安排真正可恢复的时段', '在日历上预留一段 60–90 分钟，只做恢复，不处理待办，也不拿它来补工作。');
-    pushPrompt(prompts, '什么样的休息会让我真的回到身体里，而不是只是暂停一下？');
+    pushAction(actions, text('安排真正可恢复的时段', 'Schedule real recovery time'), text('在日历上预留一段 60–90 分钟，只做恢复，不处理待办，也不拿它来补工作。', 'Block 60–90 minutes for recovery only: no task list, and no using that time to catch up on work.'));
+    pushPrompt(prompts, text('什么样的休息会让我真的回到身体里，而不是只是暂停一下？', 'What kind of rest would actually help me return to myself instead of only pausing for a moment?'));
   }
 
   if (ikigai < 27) {
-    pushAction(actions, '记录有感觉的片刻', '连续三天写下 3 个让你稍微觉得充实、轻松或被照顾到的小片刻。');
-    pushPrompt(prompts, '当我觉得这一天还算值得时，通常发生了什么？');
+    pushAction(actions, text('记录有感觉的片刻', 'Notice moments that still feel alive'), text('连续三天写下 3 个让你稍微觉得充实、轻松或被照顾到的小片刻。', 'For three days, write down three small moments that felt a bit fulfilling, lighter, or more cared for.'));
+    pushPrompt(prompts, text('当我觉得这一天还算值得时，通常发生了什么？', 'When a day feels at least somewhat worthwhile, what is usually happening?'));
   }
 
   if (lowPresence) {
-    pushAction(actions, '写下三个价值词', '先不要急着找长期答案，只写下现在最想守住的 3 个价值词，例如稳定、成长、关系或自由。');
-    pushPrompt(prompts, '如果我现在只能先对齐一件真正重要的事，那会是什么？');
+    pushAction(actions, text('写下三个价值词', 'Write down three value words'), text('先不要急着找长期答案，只写下现在最想守住的 3 个价值词，例如稳定、成长、关系或自由。', 'Do not force a long-term answer yet. Just write down three values you most want to protect right now, such as stability, growth, relationship, or freedom.'));
+    pushPrompt(prompts, text('如果我现在只能先对齐一件真正重要的事，那会是什么？', 'If I could align with only one truly important thing right now, what would it be?'));
   }
 
   if (activeSearch && !strongMeaning) {
-    pushAction(actions, '把探索变成一个小实验', '挑一个你最近反复在意的主题，用一周做一个很小的尝试，而不是继续停留在脑内分析。');
-    pushPrompt(prompts, '最近反复吸引我的主题是什么？我能不能先试一点，而不是一次想清楚？');
+    pushAction(actions, text('把探索变成一个小实验', 'Turn exploration into a small experiment'), text('挑一个你最近反复在意的主题，用一周做一个很小的尝试，而不是继续停留在脑内分析。', 'Choose a theme that keeps pulling your attention and try one very small experiment this week instead of staying only in analysis.'));
+    pushPrompt(prompts, text('最近反复吸引我的主题是什么？我能不能先试一点，而不是一次想清楚？', 'What theme keeps pulling me back lately, and can I test a little of it instead of trying to figure everything out at once?'));
   }
 
   if (strongMeaning && burnoutMax >= 50) {
-    pushAction(actions, '别把“有意义”变成“只能硬撑”', '选一件你很在乎的承诺，想想怎么把它做得更轻一点，而不是继续全扛在自己身上。');
-    pushPrompt(prompts, '我是不是把“重要的事”都默默变成必须由我撑住？');
+    pushAction(actions, text('别把“有意义”变成“只能硬撑”', 'Do not let “meaningful” turn into “I must carry it all”'), text('选一件你很在乎的承诺，想想怎么把它做得更轻一点，而不是继续全扛在自己身上。', 'Choose one commitment you care about and ask how it could become lighter, instead of assuming you must keep carrying the whole thing alone.'));
+    pushPrompt(prompts, text('我是不是把“重要的事”都默默变成必须由我撑住？', 'Have I quietly turned every “important thing” into something that only I am allowed to carry?'));
   }
 
   if (strongMeaning && burnoutMax < 25) {
-    pushAction(actions, '把有效做法固定下来', '写下最近最帮助你维持状态的一件事，并安排下周固定重复一次。');
-    pushPrompt(prompts, '哪些习惯正在支持我？我要怎样把它们保留下来？');
+    pushAction(actions, text('把有效做法固定下来', 'Make the helpful parts repeatable'), text('写下最近最帮助你维持状态的一件事，并安排下周固定重复一次。', 'Write down one thing that has been helping recently and schedule one repeat of it next week.'));
+    pushPrompt(prompts, text('哪些习惯正在支持我？我要怎样把它们保留下来？', 'Which habits are supporting me right now, and how do I keep them in place?'));
   }
 
-  pushAction(actions, '只保留一个本周重点', '把接下来一周最值得投入的一件事写下来，其余事情先以“够用”标准处理。');
-  pushAction(actions, '找一个人说清楚近况', '如果可以，和一个可信任的人聊聊最近的消耗、优先顺序，或你想重新守住的界线。');
-  pushAction(actions, '写下一句本周照顾原则', '用一句短话提醒自己这一周最想守住什么，例如“先睡够，再谈效率”或“下班后不继续补工作”。');
+  pushAction(actions, text('只保留一个本周重点', 'Keep only one priority for this week'), text('把接下来一周最值得投入的一件事写下来，其余事情先以“够用”标准处理。', 'Write down the one thing most worth your energy this week, and let the rest be handled at a “good enough” level.'));
+  pushAction(actions, text('找一个人说清楚近况', 'Say it out loud to one person'), text('如果可以，和一个可信任的人聊聊最近的消耗、优先顺序，或你想重新守住的界线。', 'If you can, talk with one trusted person about your recent strain, your priorities, or the boundary you want to protect again.'));
+  pushAction(actions, text('写下一句本周照顾原则', 'Write one care principle for this week'), text('用一句短话提醒自己这一周最想守住什么，例如“先睡够，再谈效率”或“下班后不继续补工作”。', 'Write one short sentence to remind yourself what you want to protect this week, such as “sleep first, then efficiency” or “no more catching up after work.”'));
 
-  pushPrompt(prompts, '如果下周只能改善一件事，我最想先改变什么？');
-  pushPrompt(prompts, '三个月后的自己，会感谢现在的我先处理哪一件事？');
-  pushPrompt(prompts, '这一周，什么会是对我来说真正“够好”的状态？');
+  pushPrompt(prompts, text('如果下周只能改善一件事，我最想先改变什么？', 'If I could improve only one thing next week, what would I want to change first?'));
+  pushPrompt(prompts, text('三个月后的自己，会感谢现在的我先处理哪一件事？', 'Three months from now, what would my future self thank me for addressing first?'));
+  pushPrompt(prompts, text('这一周，什么会是对我来说真正“够好”的状态？', 'This week, what would “good enough” honestly look like for me?'));
 
   return {
     title: title,
@@ -1132,12 +1484,40 @@ function renderStory(guide) {
   guide.prompts.forEach(function(prompt, idx) {
     var div = document.createElement('div');
     div.className = 'story-item';
-    div.innerHTML = '<div class="story-item-title">' + (idx + 1) + '. 反思问题</div>'
+    div.innerHTML = '<div class="story-item-title">' + (idx + 1) + '. ' + getCopy().promptItemTitle + '</div>'
       + '<div class="story-item-body">' + prompt + '</div>';
     promptsEl.appendChild(div);
   });
 
   panel.classList.add('visible');
+}
+
+function renderGuideRail(guide) {
+  var rail = document.getElementById('guide-rail');
+  document.getElementById('guide-rail-kicker').textContent = getCopy().guideRailKicker;
+  document.getElementById('guide-rail-title').textContent = guide.title;
+  document.getElementById('guide-rail-summary').textContent = guide.summary;
+  document.getElementById('guide-rail-link').textContent = getCopy().guideRailJump;
+  document.getElementById('guide-rail-link').hidden = false;
+  rail.classList.add('complete');
+}
+
+function resetGuideRail() {
+  var copy = getCopy();
+  var rail = document.getElementById('guide-rail');
+  document.getElementById('guide-rail-kicker').textContent = copy.guideRailKicker;
+  document.getElementById('guide-rail-title').textContent = copy.guideRailDefaultTitle;
+  document.getElementById('guide-rail-summary').textContent = copy.guideRailDefaultSummary;
+  document.getElementById('guide-rail-link').textContent = copy.guideRailJump;
+  document.getElementById('guide-rail-link').hidden = true;
+  rail.classList.remove('complete');
+}
+
+function getMotionBehavior() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return 'auto';
+  }
+  return 'smooth';
 }
 
 function restoreButtonSelection(key, rawValue, activeClass) {
@@ -1151,10 +1531,7 @@ function restoreButtonSelection(key, rawValue, activeClass) {
   card.classList.add('answered');
 }
 
-function restoreSavedAnswers() {
-  ans = loadSavedAnswers();
-  if (!Object.keys(ans).length) { return; }
-
+function applySelectionsFromAnswers() {
   ikigaiQs.forEach(function(q, idx) {
     var key = 'i' + (idx + 1);
     if (ans[key] !== undefined) {
@@ -1182,8 +1559,135 @@ function restoreSavedAnswers() {
       restoreButtonSelection(key, q.rev ? (8 - ans[key]) : ans[key], 'active-amber');
     }
   });
+}
 
-  setSaveNote('已恢复上次填写进度', true);
+function restoreSavedAnswers() {
+  ans = loadSavedAnswers();
+  if (!Object.keys(ans).length) { return; }
+  applySelectionsFromAnswers();
+  setSaveNote(getCopy().saveRestored, true);
+}
+
+function renderSurvey() {
+  document.getElementById('ikigai-qs').innerHTML = '';
+  document.getElementById('cbi1-qs').innerHTML = '';
+  document.getElementById('cbi2-qs').innerHTML = '';
+  document.getElementById('mlq-qs').innerHTML = '';
+  buildScale('ikigai-qs', 'i', 5, 'active-green', ikigaiQs);
+  buildCBI('cbi1-qs', 'c1_', cbi1Qs);
+  buildCBI('cbi2-qs', 'c2_', cbi2Qs);
+  buildScale('mlq-qs', 'm', 7, 'active-amber', mlqQs);
+  applySelectionsFromAnswers();
+}
+
+function updateLanguageButtons() {
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+    btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === currentLang ? 'true' : 'false');
+  });
+}
+
+function applyLanguage() {
+  var copy = getCopy();
+  document.documentElement.lang = currentLang === 'zh' ? 'zh-Hans' : 'en';
+  document.body.classList.toggle('lang-en', currentLang === 'en');
+  document.title = copy.htmlTitle;
+  syncLanguageQuery();
+  document.querySelector('.lang-toggle').setAttribute('aria-label', currentLang === 'zh' ? '语言切换' : 'Language switcher');
+
+  document.getElementById('site-title-main').textContent = copy.brandMain;
+  document.getElementById('site-title-accent').textContent = copy.brandAccent;
+  document.getElementById('link-version-gallery').textContent = copy.versionGallery;
+
+  document.getElementById('hero-kicker').textContent = copy.heroKicker;
+  document.getElementById('hero-title-main').textContent = copy.heroTitleMain;
+  document.getElementById('hero-title-accent').textContent = copy.heroTitleAccent;
+  document.getElementById('hero-copy').textContent = copy.heroCopy;
+  document.getElementById('hero-primary-btn').textContent = copy.heroPrimary;
+  document.getElementById('hero-secondary-btn').textContent = copy.heroSecondary;
+  document.getElementById('hero-caption').textContent = copy.heroCaption;
+  document.getElementById('hero-ribbon-1').textContent = copy.heroRibbon1;
+  document.getElementById('hero-ribbon-2').textContent = copy.heroRibbon2;
+  document.getElementById('hero-ribbon-3').textContent = copy.heroRibbon3;
+  document.getElementById('hero-visual-title').textContent = copy.heroVisualTitle;
+  document.getElementById('hero-visual-copy').textContent = copy.heroVisualCopy;
+  document.getElementById('hero-meter-1-label').textContent = copy.heroMeter1Label;
+  document.getElementById('hero-meter-1-value').textContent = copy.heroMeter1Value;
+  document.getElementById('hero-meter-2-label').textContent = copy.heroMeter2Label;
+  document.getElementById('hero-meter-2-value').textContent = copy.heroMeter2Value;
+  document.getElementById('hero-meter-3-label').textContent = copy.heroMeter3Label;
+  document.getElementById('hero-meter-3-value').textContent = copy.heroMeter3Value;
+  document.getElementById('hero-quote').textContent = copy.heroQuote;
+
+  document.getElementById('purpose-kicker').textContent = copy.purposeKicker;
+  document.getElementById('purpose-title').textContent = copy.purposeTitle;
+  document.getElementById('purpose-copy').textContent = copy.purposeCopy;
+  document.getElementById('purpose-item-1-title').textContent = copy.purposeItem1Title;
+  document.getElementById('purpose-item-1-body').textContent = copy.purposeItem1Body;
+  document.getElementById('purpose-item-2-title').textContent = copy.purposeItem2Title;
+  document.getElementById('purpose-item-2-body').textContent = copy.purposeItem2Body;
+  document.getElementById('purpose-item-3-title').textContent = copy.purposeItem3Title;
+  document.getElementById('purpose-item-3-body').textContent = copy.purposeItem3Body;
+
+  document.getElementById('section-ikigai-title').textContent = copy.ikigaiTitle;
+  document.getElementById('section-ikigai-hint').textContent = copy.ikigaiHint;
+  document.getElementById('section-cbi-title').textContent = copy.cbiTitle;
+  document.getElementById('section-cbi-hint').textContent = copy.cbiHint;
+  document.getElementById('section-cbi-part1').textContent = copy.cbiPart1;
+  document.getElementById('section-cbi-part2').textContent = copy.cbiPart2;
+  document.getElementById('section-mlq-title').textContent = copy.mlqTitle;
+  document.getElementById('section-mlq-hint').textContent = copy.mlqHint;
+
+  document.getElementById('aside-label').textContent = copy.asideLabel;
+  document.getElementById('aside-title').textContent = copy.asideTitle;
+  document.getElementById('aside-copy').textContent = copy.asideCopy;
+
+  document.getElementById('results-label').textContent = copy.resultsLabel;
+  document.getElementById('export-btn').textContent = copy.exportLabel;
+  document.getElementById('reset-btn').textContent = copy.resetLabel;
+  document.getElementById('results-footnote').textContent = copy.resultsFootnote;
+  document.querySelector('#r-iki').parentNode.querySelector('.score-tile-label').innerHTML = copy.tileIkigai;
+  document.querySelector('#r-c1').parentNode.querySelector('.score-tile-label').innerHTML = copy.tilePersonal;
+  document.querySelector('#r-c2').parentNode.querySelector('.score-tile-label').innerHTML = copy.tileWork;
+  document.querySelector('#r-mlq').parentNode.querySelector('.score-tile-label').innerHTML = copy.tileMlq;
+  document.querySelector('#r-iki').parentNode.querySelector('.score-tile-max').textContent = copy.fullScoreLabel + ' 45';
+  document.querySelector('#r-c1').parentNode.querySelector('.score-tile-max').textContent = '0–100';
+  document.querySelector('#r-c2').parentNode.querySelector('.score-tile-max').textContent = '0–100';
+  document.querySelector('#r-mlq').parentNode.querySelector('.score-tile-max').textContent = copy.fullScoreLabel + ' 70';
+
+  document.getElementById('story-kicker').textContent = copy.storyKicker;
+  document.getElementById('story-focus-label').textContent = copy.storyFocusLabel;
+  document.getElementById('story-actions-label').textContent = copy.storyActionsLabel;
+  document.getElementById('story-prompts-label').textContent = copy.storyPromptsLabel;
+  document.getElementById('story-note').textContent = copy.storyNote;
+  resetGuideRail();
+
+  document.getElementById('sources-kicker').textContent = copy.sourcesKicker;
+  document.getElementById('sources-title').textContent = copy.sourcesTitle;
+  document.getElementById('sources-copy').textContent = copy.sourcesCopy;
+  document.getElementById('source-ikigai-body').textContent = copy.sourceIkigaiBody;
+  document.getElementById('source-cbi-body').textContent = copy.sourceCbiBody;
+  document.getElementById('source-mlq-body').textContent = copy.sourceMlqBody;
+  document.getElementById('source-ikigai-link').textContent = copy.sourcePaper;
+  document.getElementById('source-cbi-link').textContent = copy.sourcePaper;
+  document.getElementById('source-mlq-link').textContent = copy.sourceGuide;
+  document.getElementById('sources-note').textContent = copy.sourcesNote;
+
+  document.getElementById('footer-line-1').textContent = copy.footer1;
+  document.getElementById('footer-line-2').textContent = copy.footer2;
+
+  setSaveNote(getDefaultSaveNote());
+  updateLanguageButtons();
+}
+
+function setLanguage(lang) {
+  if (lang !== 'zh' && lang !== 'en') { return; }
+  if (lang === currentLang) { return; }
+  currentLang = lang;
+  persistLanguagePreference();
+  applyLanguage();
+  renderSurvey();
+  calc();
 }
 
 function padNumber(num) {
@@ -1202,19 +1706,20 @@ function getTimestamp(date) {
 function buildExportSummary() {
   var state = getResultState();
   var guide = getGuideData(state);
+  var copy = getCopy();
   var now = new Date();
   var lines = [
-    '身心健康评估摘要',
+    copy.summaryTitle,
     '',
-    '导出时间: ' + getTimestamp(now),
-    '完成题数: ' + state.answered + ' / ' + TOTAL,
-    '状态: ' + (state.allDone ? '已完成全部题目' : '尚未完成全部题目'),
+    copy.exportedAt + ': ' + getTimestamp(now),
+    copy.answeredCount + ': ' + state.answered + ' / ' + TOTAL,
+    copy.status + ': ' + (state.allDone ? copy.completed : copy.incomplete),
     ''
   ];
 
   state.items.forEach(function(item) {
     if (item.val === null) {
-      lines.push(item.name + ': 尚未作答');
+      lines.push(item.name + ': ' + copy.unanswered);
       lines.push('');
       return;
     }
@@ -1222,36 +1727,36 @@ function buildExportSummary() {
     var interp = getInterp(item.type, item.val);
     var scoreLine = item.name + ': ' + item.scoreLabel + ' ' + item.val + ' / ' + item.max;
     if (!item.complete) {
-      scoreLine += '（暂时结果）';
+      scoreLine += currentLang === 'zh' ? '（暂时结果）' : ' (temporary)';
     }
     lines.push(scoreLine);
     if (interp) {
-      lines.push('解读: ' + interp.level + ' - ' + interp.desc);
+      lines.push(copy.interpretation + ': ' + interp.level + ' - ' + interp.desc);
     }
     lines.push('');
   });
 
   if (guide) {
-    lines.push('结果导读: ' + guide.title);
+    lines.push(copy.guidedSummary + ': ' + guide.title);
     lines.push(guide.summary);
     lines.push('');
-    lines.push('建议先关注: ' + guide.focuses.join('、'));
+    lines.push(copy.focusLabel + ': ' + guide.focuses.join(currentLang === 'zh' ? '、' : ', '));
     lines.push('');
-    lines.push('本周可以试的动作:');
+    lines.push(copy.actionsLabel + ':');
     guide.actions.forEach(function(action, idx) {
       lines.push((idx + 1) + '. ' + action.title + ': ' + action.body);
     });
     lines.push('');
-    lines.push('给自己的反思问题:');
+    lines.push(copy.promptsLabel + ':');
     guide.prompts.forEach(function(prompt, idx) {
       lines.push((idx + 1) + '. ' + prompt);
     });
     lines.push('');
   }
 
-  lines.push('说明: 此结果仅供自我反思，不构成医疗或临床建议。');
-  lines.push('数据仅在浏览器内处理。');
-  return {text: lines.join('\n'), fileName: 'self-reflection-summary-' + getDateStamp(now) + '.txt'};
+  lines.push(currentLang === 'zh' ? '说明: 此结果仅供自我反思，不构成医疗或临床建议。' : 'Note: This result is for self-reflection only and is not medical or clinical advice.');
+  lines.push(currentLang === 'zh' ? '数据仅在浏览器内处理。' : 'All data is processed locally in your browser.');
+  return {text: lines.join('\n'), fileName: (currentLang === 'zh' ? 'zi-wo-zheng-li-' : 'self-reflection-summary-') + getDateStamp(now) + '.txt'};
 }
 
 function exportSummary() {
@@ -1268,12 +1773,12 @@ function exportSummary() {
   link.click();
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
-  setSaveNote('已导出摘要', true);
+  setSaveNote(currentLang === 'zh' ? '已导出摘要' : 'Summary exported', true);
 }
 
 function resetSurvey() {
   if (!Object.keys(ans).length) { return; }
-  if (!window.confirm('确定要清除所有答案并重新开始吗？')) { return; }
+  if (!window.confirm(getCopy().resetConfirm)) { return; }
 
   ans = {};
   clearSavedAnswers();
@@ -1285,13 +1790,14 @@ function resetSurvey() {
     btn.setAttribute('aria-pressed', 'false');
   });
   calc();
-  setSaveNote('已清除本机暂存', true);
+  setSaveNote(getCopy().saveCleared, true);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function calc() {
   var state = getResultState();
-  document.getElementById('progress-pill').textContent = state.answered + ' / ' + TOTAL + ' 已填';
+  var justCompleted = hasMounted && state.allDone && !previousAllDone;
+  document.getElementById('progress-pill').textContent = state.answered + ' / ' + TOTAL + ' ' + getCopy().progressSuffix;
 
   state.items.forEach(function(item) {
     var valueEl = document.getElementById(item.textId);
@@ -1311,31 +1817,47 @@ function calc() {
   var panel = document.getElementById('interp-panel');
   var storyPanel = document.getElementById('story-panel');
   if (state.allDone) {
+    var guide = getGuideData(state);
     renderInterpretations(state.items);
-    renderStory(getGuideData(state));
+    renderGuideRail(guide);
+    renderStory(guide);
+    if (justCompleted) {
+      window.setTimeout(function() {
+        storyPanel.scrollIntoView({behavior: getMotionBehavior(), block: 'start'});
+      }, 80);
+    }
   } else {
     panel.classList.remove('visible');
     document.getElementById('interp-grid').innerHTML = '';
+    resetGuideRail();
     storyPanel.classList.remove('visible');
+    document.getElementById('story-title').textContent = '';
+    document.getElementById('story-summary').textContent = '';
     document.getElementById('story-focus').innerHTML = '';
     document.getElementById('story-actions').innerHTML = '';
     document.getElementById('story-prompts').innerHTML = '';
   }
+
+  previousAllDone = state.allDone;
 }
 
+currentLang = loadLanguagePreference();
 storageEnabled = isStorageAvailable();
-setSaveNote(getDefaultSaveNote());
+applyLanguage();
+renderSurvey();
 
-buildScale('ikigai-qs', 'i', 5, 'active-green', ikigaiQs);
-buildCBI('cbi1-qs', 'c1_', cbi1Qs);
-buildCBI('cbi2-qs', 'c2_', cbi2Qs);
-buildScale('mlq-qs', 'm', 7, 'active-amber', mlqQs);
+document.querySelectorAll('.lang-btn').forEach(function(btn) {
+  btn.onclick = function() {
+    setLanguage(btn.getAttribute('data-lang'));
+  };
+});
 
 document.getElementById('export-btn').onclick = exportSummary;
 document.getElementById('reset-btn').onclick = resetSurvey;
 
 restoreSavedAnswers();
 calc();
+hasMounted = true;
 </script>
 </body>
 </html>
