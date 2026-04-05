@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0;9..144,500..700,50&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F7F5F0;
@@ -437,104 +438,151 @@
   footer a { color: var(--text-2); text-decoration: none; }
   footer a:hover { color: var(--text); }
 </style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
+<header class="site-header">
   <div class="header-inner">
-    <div class="site-title">Wellbeing <span>Survey</span></div>
-    <div class="progress-pill" id="progress-pill">0 / 26 已填</div>
+    <a class="site-title" href="#top">Wellbeing <span>Survey</span></a>
+    <div class="header-meta">
+      <a class="header-link" href="https://github.com/teohsinyee/self-reflection-survey/blob/main/docs/version-gallery.md" target="_blank" rel="noreferrer">Version Gallery</a>
+      <div class="progress-pill" id="progress-pill">0 / 32 已填</div>
+    </div>
   </div>
 </header>
 
-<main>
-  <div class="hero">
-    <h1>身心健康<br><em>自我评估</em></h1>
-    <p>包含三份经验证量表，评估你的意义感、倦怠程度与生命意义。所有数据仅在浏览器内处理，不会上传任何服务器。</p>
-  </div>
-
-  <!-- IKIGAI -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-badge badge-green">Ikigai-9</span>
-      <span class="section-title">意义感</span>
-    </div>
-    <p class="section-hint">每题 1–5 分（1 = 完全没有，5 = 一直都是）</p>
-    <div id="ikigai-qs"></div>
-  </div>
-
-  <!-- CBI -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-badge badge-purple">CBI</span>
-      <span class="section-title">Copenhagen 倦怠量表</span>
-    </div>
-    <p class="section-hint">Never = 0 &nbsp;·&nbsp; Seldom = 25 &nbsp;·&nbsp; Sometimes = 50 &nbsp;·&nbsp; Often = 75 &nbsp;·&nbsp; Always = 100</p>
-    <div class="subsection-label">Part 1 · 个人倦怠</div>
-    <div id="cbi1-qs"></div>
-    <div class="subsection-label">Part 2 · 工作倦怠</div>
-    <div id="cbi2-qs"></div>
-  </div>
-
-  <!-- MLQ -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-badge badge-amber">MLQ</span>
-      <span class="section-title">生命意义问卷</span>
-    </div>
-    <p class="section-hint">每题 1–7 分（1 = 完全不符合，7 = 完全符合）</p>
-    <div id="mlq-qs"></div>
-  </div>
-
-  <!-- Results -->
-  <div class="results-wrap">
-    <div class="results-card">
-      <div class="results-top">
-        <div>
-          <div class="results-label">计分结果（实时更新）</div>
-          <div class="results-note" id="save-note">自动保存在此浏览器</div>
+<main id="top">
+  <section class="hero">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <div class="hero-kicker">Local-first self reflection tool</div>
+        <h1>先看见消耗，<em>再看见意义。</em></h1>
+        <p>用三份经验证量表把感受翻成更清楚的信号，再把结果变成这一周能执行的下一步。所有数据都只留在你的浏览器里。</p>
+        <div class="hero-actions">
+          <a class="hero-btn hero-btn-primary" href="#survey-start">开始填写</a>
+          <a class="hero-btn hero-btn-secondary" href="https://github.com/teohsinyee/self-reflection-survey" target="_blank" rel="noreferrer">GitHub Repo</a>
         </div>
-        <div class="results-actions">
-          <button type="button" class="action-btn" id="export-btn" disabled>导出摘要</button>
-          <button type="button" class="action-btn" id="reset-btn" disabled>重新开始</button>
-        </div>
+        <div class="hero-caption">Ikigai-9 · CBI · MLQ · browser-only autosave · exportable summary</div>
       </div>
-      <div class="scores-row">
-        <div class="score-tile">
-          <div class="score-tile-label">Ikigai-9<br>意义感</div>
-          <div class="score-tile-val val-green" id="r-iki">—</div>
-          <div class="score-tile-max">满分 45</div>
-          <div class="score-bar"><div class="score-bar-fill fill-green" id="b-iki" style="width:0"></div></div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-ribbon">
+          <span>Meaning</span>
+          <span>Burnout</span>
+          <span>Next week</span>
         </div>
-        <div class="score-tile">
-          <div class="score-tile-label">CBI<br>个人倦怠</div>
-          <div class="score-tile-val val-purple" id="r-c1">—</div>
-          <div class="score-tile-max">0–100</div>
-          <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c1" style="width:0"></div></div>
+        <div class="hero-visual-title">32 prompts. One clearer week.</div>
+        <div class="hero-visual-copy">Score the signal, then convert it into focus areas, actions, and reflection prompts.</div>
+        <div class="hero-meter-stack">
+          <div class="hero-meter hero-meter-coral"><span>Meaning signal</span><strong>story-led result</strong></div>
+          <div class="hero-meter hero-meter-violet"><span>Burnout signal</span><strong>personal + work strain</strong></div>
+          <div class="hero-meter hero-meter-gold"><span>Action layer</span><strong>3 next steps + prompts</strong></div>
         </div>
-        <div class="score-tile">
-          <div class="score-tile-label">CBI<br>工作倦怠</div>
-          <div class="score-tile-val val-purple" id="r-c2">—</div>
-          <div class="score-tile-max">0–100</div>
-          <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c2" style="width:0"></div></div>
-        </div>
-        <div class="score-tile">
-          <div class="score-tile-label">MLQ<br>生命意义</div>
-          <div class="score-tile-val val-amber" id="r-mlq">—</div>
-          <div class="score-tile-max">满分 70</div>
-          <div class="score-bar"><div class="score-bar-fill fill-amber" id="b-mlq" style="width:0"></div></div>
-        </div>
+        <div class="hero-quote">Private by default. No login. No backend. Just a calmer read on where you are right now.</div>
       </div>
-      <div class="interp" id="interp-panel">
-        <div class="interp-grid" id="interp-grid"></div>
-      </div>
-      <div class="results-footnote">带有 * 的分数代表该量表尚未完成，结果仍会继续变化。</div>
     </div>
-  </div>
+  </section>
+
+  <section class="workspace" id="survey-start">
+    <div class="workspace-shell">
+      <div class="workspace-main">
+        <section class="section section-green">
+          <div class="section-head">
+            <span class="section-badge badge-green">Ikigai-9</span>
+            <h2 class="section-title">意义感</h2>
+          </div>
+          <p class="section-hint">每题 1–5 分（1 = 完全没有，5 = 一直都是）</p>
+          <div id="ikigai-qs"></div>
+        </section>
+
+        <section class="section section-purple">
+          <div class="section-head">
+            <span class="section-badge badge-purple">CBI</span>
+            <h2 class="section-title">Copenhagen 倦怠量表</h2>
+          </div>
+          <p class="section-hint">Never = 0 &nbsp;·&nbsp; Seldom = 25 &nbsp;·&nbsp; Sometimes = 50 &nbsp;·&nbsp; Often = 75 &nbsp;·&nbsp; Always = 100</p>
+          <div class="subsection-label">Part 1 · 个人倦怠</div>
+          <div id="cbi1-qs"></div>
+          <div class="subsection-label">Part 2 · 工作倦怠</div>
+          <div id="cbi2-qs"></div>
+        </section>
+
+        <section class="section section-amber">
+          <div class="section-head">
+            <span class="section-badge badge-amber">MLQ</span>
+            <h2 class="section-title">生命意义问卷</h2>
+          </div>
+          <p class="section-hint">每题 1–7 分（1 = 完全不符合，7 = 完全符合）</p>
+          <div id="mlq-qs"></div>
+        </section>
+      </div>
+
+      <aside class="workspace-aside">
+        <div class="aside-sticky">
+          <div class="aside-block">
+            <div class="aside-label">How to use</div>
+            <h2 class="aside-title">一次完成，先看分数，再看导读。</h2>
+            <p class="aside-copy">Ikigai-9 看意义感，CBI 看个人与工作倦怠，MLQ 看意义相关感受。完成全部题目后，结果会自动转换成行动建议。</p>
+            <ul class="aside-list">
+              <li><span>01</span><div>题目都是双语显示，适合快速扫读后直接作答。</div></li>
+              <li><span>02</span><div>进度会自动保存在当前浏览器，刷新后可继续。</div></li>
+              <li><span>03</span><div>导出摘要会把分数、导读与反思问题一起带走。</div></li>
+            </ul>
+          </div>
+
+          <div class="results-wrap">
+            <div class="results-card">
+              <div class="results-top">
+                <div>
+                  <div class="results-label">Realtime signals</div>
+                  <div class="results-note" id="save-note">自动保存在此浏览器</div>
+                </div>
+                <div class="results-actions">
+                  <button type="button" class="action-btn" id="export-btn" disabled>导出摘要</button>
+                  <button type="button" class="action-btn" id="reset-btn" disabled>重新开始</button>
+                </div>
+              </div>
+              <div class="scores-row">
+                <div class="score-tile">
+                  <div class="score-tile-label">Ikigai-9<br>意义感</div>
+                  <div class="score-tile-val val-green" id="r-iki">—</div>
+                  <div class="score-tile-max">满分 45</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-green" id="b-iki" style="width:0"></div></div>
+                </div>
+                <div class="score-tile">
+                  <div class="score-tile-label">CBI<br>个人倦怠</div>
+                  <div class="score-tile-val val-purple" id="r-c1">—</div>
+                  <div class="score-tile-max">0–100</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c1" style="width:0"></div></div>
+                </div>
+                <div class="score-tile">
+                  <div class="score-tile-label">CBI<br>工作倦怠</div>
+                  <div class="score-tile-val val-purple" id="r-c2">—</div>
+                  <div class="score-tile-max">0–100</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-purple" id="b-c2" style="width:0"></div></div>
+                </div>
+                <div class="score-tile">
+                  <div class="score-tile-label">MLQ<br>意义相关感受</div>
+                  <div class="score-tile-val val-amber" id="r-mlq">—</div>
+                  <div class="score-tile-max">满分 70</div>
+                  <div class="score-bar"><div class="score-bar-fill fill-amber" id="b-mlq" style="width:0"></div></div>
+                </div>
+              </div>
+              <div class="interp" id="interp-panel">
+                <div class="interp-grid" id="interp-grid"></div>
+              </div>
+              <div class="results-footnote">带有 * 的分数代表该量表尚未完成，结果仍会继续变化。</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
   <div class="story" id="story-panel">
     <div class="story-card">
       <div class="story-kicker">完成后怎么用这些结果</div>
-      <div class="story-title" id="story-title"></div>
+      <h2 class="story-title" id="story-title"></h2>
       <div class="story-summary" id="story-summary"></div>
       <div class="story-focus">
         <div class="story-subtitle">建议先关注</div>
@@ -556,8 +604,10 @@
 </main>
 
 <footer>
-  <p>Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire</p>
-  <p style="margin-top:6px;">数据仅在本地处理，不会储存或传送 &nbsp;·&nbsp; Data stays in your browser</p>
+  <div class="site-footer">
+    <p>Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire</p>
+    <p style="margin-top:6px;">数据仅在本地处理，不会储存或传送 &nbsp;·&nbsp; Data stays in your browser</p>
+  </div>
 </footer>
 
 <script>
