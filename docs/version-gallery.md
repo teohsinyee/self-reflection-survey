@@ -28,7 +28,7 @@ Each entry should point back to an immutable reference such as a commit SHA, mer
 ## v3 · Editorial UI Redesign
 
 - Date: 2026-04-06
-- Context: rebuilds the app into a warmer editorial-style experience with a poster-like hero, clearer workspace layout, and more visually intentional results presentation
+- Context: rebuilds the app into a warmer editorial-style experience with a poster-like hero, clearer workspace layout, single-language switching, and source notes for the reflection framework
 - Reference: implementation commit [`3996dad`](https://github.com/teohsinyee/self-reflection-survey/commit/3996dad)
 
 ![v3 editorial redesign overview](screenshots/v3-editorial-redesign/overview.png)
