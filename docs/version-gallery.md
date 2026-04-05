@@ -25,14 +25,20 @@ Each entry should point back to an immutable reference such as a commit SHA, mer
 
 ![v2 actionable results guidance screenshot](screenshots/v2-actionable-results/results-guidance.png)
 
-## v3 · Editorial UI Redesign
+## v3 · Editorial Reflection Workspace
 
 - Date: 2026-04-06
-- Context: rebuilds the app into a warmer editorial-style experience with a poster-like hero, clearer workspace layout, single-language switching, and source notes for the reflection framework
-- Reference: implementation commit [`3996dad`](https://github.com/teohsinyee/self-reflection-survey/commit/3996dad)
+- Context: evolves the app from a simple score sheet into a calmer editorial-style reflection workspace with clearer purpose, result flow, and language framing
+- Reference: commits [`3996dad`](https://github.com/teohsinyee/self-reflection-survey/commit/3996dad), [`2fb2b38`](https://github.com/teohsinyee/self-reflection-survey/commit/2fb2b38), [`0974e47`](https://github.com/teohsinyee/self-reflection-survey/commit/0974e47), [`d767a5c`](https://github.com/teohsinyee/self-reflection-survey/commit/d767a5c) · [PR #3](https://github.com/teohsinyee/self-reflection-survey/pull/3)
+- adds the poster-style hero and warmer editorial visual system
+- moves the full guide to the bottom so finishing the survey feels more natural
+- introduces a true Chinese / English toggle instead of mixed bilingual copy
+- explains the purpose of the reflection and clarifies that the questionnaires are adapted from published research references, not presented as an official clinical tool
+- relaxes the crowded front section so the page reads more like one flow and less like competing cards
 
-![v3 editorial redesign overview](screenshots/v3-editorial-redesign/overview.png)
-![v3 editorial redesign story view](screenshots/v3-editorial-redesign/story.png)
+![v3 current overview](screenshots/v3-editorial-redesign/overview.png)
+![v3 english desktop mode](screenshots/v3-editorial-redesign/english.png)
+![v3 mobile layout](screenshots/v3-editorial-redesign/mobile.png)
 
 ## Maintenance Notes
 
