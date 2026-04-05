@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>身心健康评估 · Wellbeing Survey</title>
+<title>身心健康评估 · Self Reflection Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -444,7 +444,7 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <a class="site-title" href="#top">Wellbeing <span>Survey</span></a>
+    <a class="site-title" href="#top">Self Reflection <span>Survey</span></a>
     <div class="header-meta">
       <a class="header-link" href="https://github.com/teohsinyee/self-reflection-survey/blob/main/docs/version-gallery.md" target="_blank" rel="noreferrer">Version Gallery</a>
       <div class="progress-pill" id="progress-pill">0 / 32 已填</div>
@@ -456,9 +456,9 @@
   <section class="hero">
     <div class="hero-shell">
       <div class="hero-copy">
-        <div class="hero-kicker">Local-first self reflection tool</div>
-        <h1>先看见消耗，<em>再看见意义。</em></h1>
-        <p>用三份经验证量表把感受翻成更清楚的信号，再把结果变成这一周能执行的下一步。所有数据都只留在你的浏览器里。</p>
+        <div class="hero-kicker">Private self reflection tool</div>
+        <h1>先看见信号，<em>再整理下一步。</em></h1>
+        <p>用三份经验证量表把感受整理成更清楚的分数、导读与下一步建议。所有数据都只留在你的浏览器里，不会上传到任何地方。</p>
         <div class="hero-actions">
           <a class="hero-btn hero-btn-primary" href="#survey-start">开始填写</a>
           <a class="hero-btn hero-btn-secondary" href="https://github.com/teohsinyee/self-reflection-survey" target="_blank" rel="noreferrer">GitHub Repo</a>
@@ -467,18 +467,18 @@
       </div>
       <div class="hero-visual" aria-hidden="true">
         <div class="hero-ribbon">
-          <span>Meaning</span>
-          <span>Burnout</span>
-          <span>Next week</span>
+          <span>Signals</span>
+          <span>Strain</span>
+          <span>Next step</span>
         </div>
-        <div class="hero-visual-title">32 prompts. One clearer week.</div>
-        <div class="hero-visual-copy">Score the signal, then convert it into focus areas, actions, and reflection prompts.</div>
+        <div class="hero-visual-title">32 prompts. One clearer read.</div>
+        <div class="hero-visual-copy">Read your current signals, then turn them into focus areas, actions, and reflection prompts.</div>
         <div class="hero-meter-stack">
-          <div class="hero-meter hero-meter-coral"><span>Meaning signal</span><strong>story-led result</strong></div>
-          <div class="hero-meter hero-meter-violet"><span>Burnout signal</span><strong>personal + work strain</strong></div>
+          <div class="hero-meter hero-meter-coral"><span>Meaning + direction</span><strong>guided summary</strong></div>
+          <div class="hero-meter hero-meter-violet"><span>Strain signal</span><strong>personal + work load</strong></div>
           <div class="hero-meter hero-meter-gold"><span>Action layer</span><strong>3 next steps + prompts</strong></div>
         </div>
-        <div class="hero-quote">Private by default. No login. No backend. Just a calmer read on where you are right now.</div>
+        <div class="hero-quote">Private by default. No login. No backend. Just a clearer read on where you are right now.</div>
       </div>
     </div>
   </section>
@@ -520,21 +520,16 @@
       <aside class="workspace-aside">
         <div class="aside-sticky">
           <div class="aside-block">
-            <div class="aside-label">How to use</div>
-            <h2 class="aside-title">一次完成，先看分数，再看导读。</h2>
-            <p class="aside-copy">Ikigai-9 看意义感，CBI 看个人与工作倦怠，MLQ 看意义相关感受。完成全部题目后，结果会自动转换成行动建议。</p>
-            <ul class="aside-list">
-              <li><span>01</span><div>题目都是双语显示，适合快速扫读后直接作答。</div></li>
-              <li><span>02</span><div>进度会自动保存在当前浏览器，刷新后可继续。</div></li>
-              <li><span>03</span><div>导出摘要会把分数、导读与反思问题一起带走。</div></li>
-            </ul>
+            <div class="aside-label">Result rail</div>
+            <h2 class="aside-title">右侧会先更新分数，完成后导读会直接在这里展开。</h2>
+            <p class="aside-copy">你不需要再往页面最下面找建议。完成全部题目后，这张结果卡会直接显示导读、3 个建议动作，以及可展开的反思问题。</p>
           </div>
 
           <div class="results-wrap">
             <div class="results-card">
               <div class="results-top">
                 <div>
-                  <div class="results-label">Realtime signals</div>
+                  <div class="results-label">Live results</div>
                   <div class="results-note" id="save-note">自动保存在此浏览器</div>
                 </div>
                 <div class="results-actions">
@@ -568,6 +563,24 @@
                   <div class="score-bar"><div class="score-bar-fill fill-amber" id="b-mlq" style="width:0"></div></div>
                 </div>
               </div>
+              <div class="story" id="story-panel">
+                <div class="story-card">
+                  <div class="story-kicker">Guided next steps</div>
+                  <h3 class="story-title" id="story-title"></h3>
+                  <div class="story-summary" id="story-summary"></div>
+                  <div class="story-focus">
+                    <div class="story-subtitle">建议先关注</div>
+                    <div class="story-tags" id="story-focus"></div>
+                  </div>
+                  <div class="story-subtitle story-section-label">本周先做这 3 件事</div>
+                  <div class="story-list" id="story-actions"></div>
+                  <details class="story-details">
+                    <summary>展开反思问题</summary>
+                    <div class="story-list" id="story-prompts"></div>
+                  </details>
+                  <div class="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
+                </div>
+              </div>
               <div class="interp" id="interp-panel">
                 <div class="interp-grid" id="interp-grid"></div>
               </div>
@@ -578,34 +591,11 @@
       </aside>
     </div>
   </section>
-
-  <div class="story" id="story-panel">
-    <div class="story-card">
-      <div class="story-kicker">完成后怎么用这些结果</div>
-      <h2 class="story-title" id="story-title"></h2>
-      <div class="story-summary" id="story-summary"></div>
-      <div class="story-focus">
-        <div class="story-subtitle">建议先关注</div>
-        <div class="story-tags" id="story-focus"></div>
-      </div>
-      <div class="story-grid">
-        <div class="story-col">
-          <div class="story-subtitle">本周可以试的 3 个动作</div>
-          <div class="story-list" id="story-actions"></div>
-        </div>
-        <div class="story-col">
-          <div class="story-subtitle">给自己的反思问题</div>
-          <div class="story-list" id="story-prompts"></div>
-        </div>
-      </div>
-      <div class="story-note">这不是诊断，而是把分数转换成更具体的下一步。</div>
-    </div>
-  </div>
 </main>
 
 <footer>
   <div class="site-footer">
-    <p>Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire</p>
+    <p>Self Reflection Survey · Ikigai-9 · Copenhagen Burnout Inventory · Meaning in Life Questionnaire</p>
     <p style="margin-top:6px;">数据仅在本地处理，不会储存或传送 &nbsp;·&nbsp; Data stays in your browser</p>
   </div>
 </footer>

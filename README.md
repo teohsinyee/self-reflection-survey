@@ -1,4 +1,4 @@
-# 身心健康评估 · Wellbeing Survey
+# 身心健康评估 · Self Reflection Survey
 
 An interactive, single-page web app for self-assessment using three validated psychological scales.
 
